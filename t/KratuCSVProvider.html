@@ -1,0 +1,97 @@
+<!-- Copyright 2011 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. -->
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src='../js/dataproviders/csv.js'></script>
+    <script type="text/javascript" >
+      "use strict";
+      window.onload = function () {
+        function assertCSV (csv) {
+          if (csv.length !== 8) {
+            throw "Could not parse all records";
+          }
+          var columnNames = ['Year', 'Make', 'Model', 'Description', 'Price'];
+          for (var ci=0; ci < columnNames.length; ci++) {
+            if (!csv[0][columnNames[ci]]) {
+              throw "Could not find column name "+columnNames[ci];
+            }
+          }
+          if (csv[0].Model !== 'E350') {
+            throw "Error in plain parsing";
+          }
+          for (var key in csv[1]) {
+            if (csv[1][key] !== '') {
+              throw "Empty string record had non-empty column "+key+" with value '"+csv[1][key]+"'";
+            }
+          }
+          if (csv[5].Model != 'Venture "Extended Edition, Very Large"') {
+            throw "Could not correctly parse escaped quotes: \n"+csv[5].Model;
+          }
+        }
+
+        var testCase =
+        'Year,Make,Model,Description,Price\n'+
+        '1997,Ford,E350,"ac, abs, moon",3000.00\n'+
+        ',,,,"",\n'+
+        '0123,Mongo,"""","ASCI",5000.00\n'+
+        '1999,Chevy,"""Venture ""Extended\n'+'\n'+'\n'+'Edition""","",4900.00\n'+
+        '0123,Mongo,"""""","DESC",5000.00\n'+
+        '1999,Chevy,"Venture ""Extended Edition, Very Large""","",5000.00\n'+
+        '0123,Mongo,"""""","",5000.00\n'+
+        '1996,Jeep,Grand Cherokee,"MUST SELL!\n'+'air, moon roof, loaded",4799.00\n';
+
+        var succeeded = true;
+
+        try { // Test all-in-one-go-parsing (return records, no callbacks)
+          var csvProvider = new KratuCSVProvider();
+          var csv = csvProvider.parse(testCase);
+          assertCSV( csv );
+        }
+        catch (err) {
+          alert('Return parsing test failed: '+err);
+          succeeded = false;
+        }
+
+        try { // Test callback-as-you-go-parsing (callback(record) for each record found, callback(null) when no more records found)
+          var csvProvider = new KratuCSVProvider();
+          var csv = [];
+          csvProvider.parse(testCase, function (record){
+            if (record !== null) { // We have a record
+              csv.push(record);
+            }
+            else { // No more records
+            assertCSV( csv );
+            }
+          });
+
+        }
+        catch (err) {
+          alert('Callback parsing test failed: '+err)
+          succeeded = false;
+        }
+
+        var div = document.createElement('div');
+        div.textContent = 'Tests '+(succeeded ? 'passed' : 'failed');
+        document.body.appendChild(div);
+      }
+  </script>
+
+  </head>
+  <body>
+    http://phantomjs.org/
+  </body>
+</html>
