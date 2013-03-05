@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Kratu by google</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Kratu</h1>
+        <p>Client-side analysis framework to create simple and powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.</p>
+
+        <p class="view"><a href="https://github.com/google/kratu">View the Project on GitHub <small>google/kratu</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/google/kratu/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/google/kratu/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/google/kratu">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>Client-side analysis framework to create simple and powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.</p>
+
+<h1>Kratu</h1>
+
+<blockquote>
+<p>Kratu is an Open Source client-side analysis framework to create simple yet powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.
+<a href="http://spokensanskrit.de/index.php?tinput=kratu&amp;script=&amp;direction=SE&amp;link=yes">Kratu is a Sanskrit</a> word and means enlightenment, understanding and intelligence.</p>
+</blockquote>
+
+<p>You can use Kratu to analyze data for support queue prioritization, account quality optimization, performance analysis, product comparison and much more.</p>
+
+<ul>
+<li><strong><a href="http://youtu.be/xyz123">Watch the 2 minute video for a quick tour on what it can do</a></strong></li>
+</ul><h2>Installation</h2>
+
+<p><strong>Note: if running locally, you might have to start your browser with a flag to allow local file loading. For Chrome, use <em>--allow-file-access-from-files</em></strong>
+Simply <a href="https://github.com/google/kratu/archive/master.zip">download Kratu</a> and extract, or check out the repository:</p>
+
+<pre><code>$ git clone https://github.com/google/kratu.git
+</code></pre>
+
+<h2>Quick start</h2>
+
+<p>If you want to see more of what Kratu can do, <a href="http://youtu.be/xyz123">watch the video</a> or simply download (see above) and look at the examples included.</p>
+
+<p>Otherwise, here's a quick look at how to render a simple report</p>
+
+<div class="highlight"><pre><span class="c1">// Instantiate a new Kratu object</span>
+<span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Kratu</span><span class="p">();</span>
+
+<span class="c1">// Set the data we'd like to render</span>
+<span class="nx">kratu</span><span class="p">.</span><span class="nx">setEntities</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+
+<span class="c1">// Tell Kratu where to render our report</span>
+<span class="nx">kratu</span><span class="p">.</span><span class="nx">setRenderElement</span><span class="p">(</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'kratuReport'</span><span class="p">)</span> <span class="p">);</span>
+
+<span class="c1">// And render it!</span>
+<span class="nx">kratu</span><span class="p">.</span><span class="nx">renderReport</span><span class="p">();</span>
+</pre></div>
+
+<h2>In-depth tutorial</h2>
+
+<p>To get a better understanding of what Kratu has to offer, go through <a href="https://github.com/google/kratu/generated_pages/tutorial">this in-depth tutorial</a>, where we'll build a <a href="https://github.com/google/kratu/examples/spaceshipselector/">product comparison analysis</a> that can help users figure out which spaceship to buy.</p>
+
+<h2>Fine print</h2>
+
+<p>Pull requests are very much appreciated. Please sign the <a href="http://code.google.com/legal/individual-cla-v1.0.html">Google Code contributor license agreement</a> (There is a convenient online form) before submitting.</p>
+
+<dl>
+<dt>Author</dt>
+<dd><a href="https://plus.google.com/115142215538295075810">Tarjei Vassbotn (Google Inc.)</a></dd>
+  <dt>Copyright</dt>
+<dd>Copyright © 2013 Google, Inc.</dd>
+  <dt>License</dt>
+<dd>Apache 2.0</dd>
+</dl>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/google">google</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-39026530-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
