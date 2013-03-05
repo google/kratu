@@ -1,5 +1,3 @@
-Client-side analysis framework to create simple and powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.
-
 Kratu
 =====
 > Kratu is an Open Source client-side analysis framework to create simple yet powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.
@@ -7,7 +5,7 @@ Kratu
 
 You can use Kratu to analyze data for support queue prioritization, account quality optimization, performance analysis, product comparison and much more.
 
-* **[Watch the 2 minute video for a quick tour on what it can do](http://youtu.be/xyz123)**
+![Example Kratu Report](http://google.github.com/kratu/img/tut_finalreport.png)
 
 ## Installation
 **Note: if running locally, you might have to start your browser with a flag to allow local file loading. For Chrome, use _--allow-file-access-from-files_**
@@ -17,7 +15,7 @@ Simply [download Kratu](https://github.com/google/kratu/archive/master.zip) and 
 $ git clone https://github.com/google/kratu.git
 ```
 ## Quick start
-If you want to see more of what Kratu can do, [watch the video](http://youtu.be/xyz123) or simply download (see above) and look at the examples included.
+If you want to see more of what Kratu can do, download (see above) and look at the examples included.
 
 Otherwise, here's a quick look at how to render a simple report
 ```javascript
