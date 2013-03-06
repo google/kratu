@@ -449,10 +449,10 @@ The report definition can describe the following attributes of a signal:
   <dt>key</dt><dd>String (**mandatory**), identifying name of the signal</dd>
   <dt>name</dt><dd>String, descriptive name of signal</dd>
   <dt>weight</dt><dd>Float, Maximal impact signal can represent (0.0 - 100.0)</dd>
-  <dt>lMax</dt><dd>Float, lowest point of low threshold where signal yields maximum opportunity. When getData <= lMax, calc. weight = weight</dd>
-  <dt>lMin</dt><dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData > lMin (and < jMin, if defined), calculated weight = 0</dd>
-  <dt>hMin</dt><dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData < hMin (and > lMin, if defined), calculated weight = 0</dd>
-  <dt>hMax</dt><dd>Float, highest point of high threshold where signal yields maximum opportunity.  When getData >= hMax, calculated weight = weight</dd>
+  <dt>lMax</dt><dd>Float, lowest point of low threshold where signal yields maximum opportunity. When getData &lt;= lMax, calc. weight = weight</dd>
+  <dt>lMin</dt><dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData &gt; lMin (and &lt; jMin, if defined), calculated weight = 0</dd>
+  <dt>hMin</dt><dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData &lt; hMin (and &gt; lMin, if defined), calculated weight = 0</dd>
+  <dt>hMax</dt><dd>Float, highest point of high threshold where signal yields maximum opportunity.  When getData &gt;= hMax, calculated weight = weight</dd>
   <dt>scaleExponent</dt><dd>float, used to ease the curve between lMax/lMin and hMin/hMax - see adjustment of signal to visualize.</dd>
 </dl>
 

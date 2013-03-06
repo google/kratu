@@ -489,39 +489,25 @@ Unless specified otherwise, each signal get's a calculated score. This score is 
 <p>The report definition can describe the following attributes of a signal:</p>
 
 <dl>
-<dt>key</dt>
-<dd>String (**mandatory**), identifying name of the signal</dd>
-  <dt>name</dt>
-<dd>String, descriptive name of signal</dd>
-  <dt>weight</dt>
-<dd>Float, Maximal impact signal can represent (0.0 - 100.0)</dd>
-  <dt>lMax</dt>
-<dd>Float, lowest point of low threshold where signal yields maximum opportunity. When getData 
-  </dd>
-<dt>lMin</dt>
-<dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData &gt; lMin (and 
-  </dd>
-<dt>hMin</dt>
-<dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData  lMin, if defined), calculated weight = 0</dd>
-  <dt>hMax</dt>
-<dd>Float, highest point of high threshold where signal yields maximum opportunity.  When getData &gt;= hMax, calculated weight = weight</dd>
-  <dt>scaleExponent</dt>
-<dd>float, used to ease the curve between lMax/lMin and hMin/hMax - see adjustment of signal to visualize.</dd>
-</dl><p>The signal definition can additionaly describe:</p>
+  <dt>key</dt><dd>String (**mandatory**), identifying name of the signal</dd>
+  <dt>name</dt><dd>String, descriptive name of signal</dd>
+  <dt>weight</dt><dd>Float, Maximal impact signal can represent (0.0 - 100.0)</dd>
+  <dt>lMax</dt><dd>Float, lowest point of low threshold where signal yields maximum opportunity. When getData &lt;= lMax, calc. weight = weight</dd>
+  <dt>lMin</dt><dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData &gt; lMin (and &lt; jMin, if defined), calculated weight = 0</dd>
+  <dt>hMin</dt><dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData &lt; hMin (and &gt; lMin, if defined), calculated weight = 0</dd>
+  <dt>hMax</dt><dd>Float, highest point of high threshold where signal yields maximum opportunity.  When getData &gt;= hMax, calculated weight = weight</dd>
+  <dt>scaleExponent</dt><dd>float, used to ease the curve between lMax/lMin and hMin/hMax - see adjustment of signal to visualize.</dd>
+</dl>
+
+<p>The signal definition can additionaly describe:</p>
 
 <dl>
-<dt>getData</dt>
-<dd>Function, method that will be called to get the data for this signal. If not provided, the signals key will be used to lookup the corresponding value in the account-object</dd>
-  <dt>range</dt>
-<dd>Object, provides boundaries for adjusting the signal and should contain an object with a min, max and step key/value</dd>
-  <dt>format</dt>
-<dd>Function, function that takes the return data from getData as first argument</dd>
-  <dt>isBoolean</dt>
-<dd>Boolean, flag to show that this is a boolean signal</dd>
-  <dt>hasCalculation</dt>
-<dd>Function, method that determines wether to calculate a score for this signal</dd>
-  <dt>calculateWeight</dt>
-<dd>Function, overridable method for calculating the score for this signal.</dd>
+  <dt>getData</dt><dd>Function, method that will be called to get the data for this signal. If not provided, the signals key will be used to lookup the corresponding value in the account-object</dd>
+  <dt>range</dt><dd>Object, provides boundaries for adjusting the signal and should contain an object with a min, max and step key/value</dd>
+  <dt>format</dt><dd>Function, function that takes the return data from getData as first argument</dd>
+  <dt>isBoolean</dt><dd>Boolean, flag to show that this is a boolean signal</dd>
+  <dt>hasCalculation</dt><dd>Function, method that determines wether to calculate a score for this signal</dd>
+  <dt>calculateWeight</dt><dd>Function, overridable method for calculating the score for this signal.</dd>
 </dl>
       </section>
       <footer>
