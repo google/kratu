@@ -1318,7 +1318,7 @@ Kratu.prototype.createRotatedElement = function(title) {
  *    yields maximum opportunity. When getData <= lMax, calc. weight = weight
  *  lMin : Float - optional, lowest point of high threshold where signal
  *    yields minimum opportunity.
- *    When getData > lMin (and < jMin, if defined), calculated weight = 0
+ *    When getData > lMin (and < hMin, if defined), calculated weight = 0
  *  hMin : Float - optional, lowest point of high threshold where signal
  *    yields minimum opportunity.
  *    When getData < hMin (and > lMin, if defined), calculated weight = 0
