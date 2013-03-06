@@ -12,7 +12,7 @@ This tutorial assumes you have familiarity with HTML and Javascript.
 **How everything fits together:**
 ![Kratu Overview](http://google.github.com/kratu/img/overview.png)
 
-In it's simplest form, Kratu can take a bunch of data (specifically a Javascript array with objects) and renders it.
+In it's simplest form, Kratu takes a bunch of data (specifically a Javascript array with objects) and renders it in a table.
 
 You can easily add pagination and have an awesome table renderer, but it offers so much more if you add a *report definition*.
 This allows you to specify how Kratu will interpret your data, by assigning weights and thresholds to each data point category.
