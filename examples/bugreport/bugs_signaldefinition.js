@@ -16,6 +16,10 @@
 
 /**
  * Signal definitions for the Bug Report example
+ *
+ * In this example, we use classification of tickets and departments
+ * to do the calculation of the weights
+ *
  * TODO: Add more docs
  * @constructor
  * @param {Kratu} kratu class instance.

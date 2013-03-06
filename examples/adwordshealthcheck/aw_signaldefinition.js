@@ -17,7 +17,14 @@
 /**
  * Signal definitions for the AdWords Health Check
  * This is a comprehensive example of an advanced signal definition
- * TODO: Add more docs
+ * 
+ * If you supply the correct data, this can provide a good starting point
+ * for doing AdWords account optimiztion, but should not be considered
+ * an exhaustive list of possible optimization areas.
+ * 
+ * Since every AdWords account behaves differently, do not rely solely
+ * on the optimizations highlighted by this software. 
+ *
  * @constructor
  * @param {Kratu} kratu class instance.
  **/

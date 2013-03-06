@@ -16,17 +16,25 @@
 
 /**
  * Signal definitions for the Spaceships Selector
+ * 
+ * Define custom behaviour for our signals
+ * See Signal section in tutorial for more info
+ *
  * @constructor
  * @param {Kratu} kratu class instance.
  **/
  function KratuSignalDefinitions(kratu) {
-  var toggleSignal = {click: kratu.eventHandlers.toggleSignal,     contextmenu: kratu.eventHandlers.adjustSignal};
+  // For name and model, we want to use the overall score.
+  // This can be done by using the built in sumScore function
   this.name = {
     calculateWeight: kratu.calculations.sumScore
   };
   this.model = {
     calculateWeight: kratu.calculations.sumScore
   };
+
+  // We want to be able to render the image using the url in
+  // A custom format function allows us to do this
   this.imageUrl = {
     format: function (value, elm) {
       var img = document.createElement('img');
@@ -36,6 +44,12 @@
       return null;
     }
   };
+
+  // Define common event handler signals to be togglable
+  var toggleSignal = {click: kratu.eventHandlers.toggleSignal};
+
+  // For the other signals, we're using built in formatters, and
+  // built in ranking calculations instead of thresholds
   this.cost = {
     format: kratu.formatters.money,
     calculateWeight: kratu.calculations.rankSmallToLarge,
