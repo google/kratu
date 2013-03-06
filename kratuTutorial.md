@@ -34,9 +34,6 @@ Let's create a basic HTML page and include a reference to the Kratu library itse
     <script src='js/kratu.js'></script>
   </head>
   <body>
-    <div class="kratuLogo small">
-      <a href="">k</a><span>powered by</span>
-    </div>
     <h1>Kratu Spaceship Selector</h1>
     <div id="kratuReport"></div>
   </body>
@@ -104,7 +101,6 @@ You can also supply thresholds, so Kratu knows when a datapoint is good or bad (
 
 The easiest way to supply Kratu with this information, is to define a *report definition*.
 The report definition is a javascript data structure that you can easily serialize to/from [JSON](http://en.wikipedia.org/wiki/JSON).
-(As you will see later, you can also supply a signal defintion written in javascript, adding powerful flexibility to your signals. The reason they are separated is to make it easy to store the report definition, enabling individual settings per user of your report. It also allows for code reuse, as the same signal definitions can be use by multiple report definitions).
 
 Here's a basic report definition that allows us to put weights and thresholds to the different datapoints for our spaceships:
 ```json
@@ -133,6 +129,8 @@ Here's a basic report definition that allows us to put weights and thresholds to
 }
 ```
 Save this as *spaceship_reportdefinition.json*
+
+(As you will see later, you can also supply a signal defintion written in javascript, adding powerful flexibility to your signals. The reason they are separated is to make it easy to store the report definition, enabling individual settings per user of your report. It also allows for code reuse, as the same signal definitions can be use by multiple report definitions).
 
 To load this as a file, we use the simple JSON-loader supplied (feel free to use your favorite framwork instead).
 Include the KratuJsonProvider...
@@ -163,7 +161,8 @@ window.onload = function () {
 };
 ```
 
-That looks much better:
+Now it's starting to look like something:
+
 ![Added some weights](http://google.github.com/kratu/img/tut_addedweights.png)
 
 ## Ranking and formatting
@@ -173,7 +172,7 @@ Surely we need to consider price and other signals. We don't want to set specifi
 
 In addition, we want to format our values properly, and we want to display the images of the models.
  
-We would also want to make the user able to toggle which columns he cares about.
+We would also want to make the user able to toggle which columns s/he cares about.
 
 To do this, we need to add a bit of javascript:
 First, let's update our report definition, so that Kratu knows that we will use a Javascript file to tell Kratu how each signal should be interpreted:
@@ -186,9 +185,7 @@ First, let's update our report definition, so that Kratu knows that we will use 
     ....
 ```
 
-Then, let's create the file *spaceships_signaldefinition.js* and add the following code to it:
-
-(Have a look through the comments in the code to better understand what's going on)
+Then, let's create the file *spaceships_signaldefinition.js* and add the following to it:
 ```javascript
  function KratuSignalDefinitions(kratu) {
   // For name and model, we want to use the overall score.
@@ -251,6 +248,7 @@ Then, let's create the file *spaceships_signaldefinition.js* and add the followi
   };
 }
 ```
+(Have a look through the comments to better understand what's going on)
 
 No need to update the code in our page, as Kratu will automatically load the specified signal definition supplied in the report definition.
 
