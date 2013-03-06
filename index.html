@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -15,81 +16,520 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Kratu</h1>
-        <p>Client-side analysis framework to create simple and powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.</p>
-
-        <p class="view"><a href="https://github.com/google/kratu">View the Project on GitHub <small>google/kratu</small></a></p>
-
+        <h1 class="header">Kratu</h1>
+        <p class="header">Client-side analysis framework to create simple and powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.</p>
 
         <ul>
-          <li><a href="https://github.com/google/kratu/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/google/kratu/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/google/kratu">View On <strong>GitHub</strong></a></li>
+          <li class="download"><a class="buttons" href="https://github.com/google/kratu/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/google/kratu/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/google/kratu">View On GitHub</a></li>
         </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/google">google</a></p>
+
+
       </header>
       <section>
-        <h1>Kratu</h1>
+        <h1>Kratu Tutorial - Spaceship Comparison Analysis</h1>
 
-<blockquote>
-<p>Kratu is an Open Source client-side analysis framework to create simple yet powerful renditions of data. It allows you to dynamically adjust your view of the data to highlight opportunities, issues and correlations in the data.
-<a href="http://spokensanskrit.de/index.php?tinput=kratu&amp;script=&amp;direction=SE&amp;link=yes">Kratu is a Sanskrit</a> word and means enlightenment, understanding and intelligence.</p>
-</blockquote>
+<p>In this tutorial we'll build a product comparison analysis that can help users figure out which spaceship to buy.
+If you get stuck along the way, you can find the final source code here: <a href="https://github.com/google/kratu/tree/master/examples/spaceshipselector">https://github.com/google/kratu/tree/master/examples/spaceshipselector/</a></p>
 
-<p>You can use Kratu to analyze data for support queue prioritization, account quality optimization, performance analysis, product comparison and much more.</p>
+<h2>Before you start</h2>
 
-<ul>
-<li><strong><a href="http://youtu.be/xyz123">Watch the 2 minute video for a quick tour on what it can do</a></strong></li>
-</ul><h2>Installation</h2>
+<p>Take your time to read the <a href="./index.html">Installation and Quick start</a>.</p>
 
-<p><strong>Note: if running locally, you might have to start your browser with a flag to allow local file loading. For Chrome, use <em>--allow-file-access-from-files</em></strong>
-Simply <a href="https://github.com/google/kratu/archive/master.zip">download Kratu</a> and extract, or check out the repository:</p>
+<p>This tutorial assumes you have familiarity with HTML and Javascript.</p>
 
-<pre><code>$ git clone https://github.com/google/kratu.git
-</code></pre>
+<h2>Overview</h2>
 
-<h2>Quick start</h2>
+<p><strong>How everything fits together:</strong>
+<img src="http://google.github.com/kratu/img/overview.png" alt="Kratu Overview"></p>
 
-<p>If you want to see more of what Kratu can do, <a href="http://youtu.be/xyz123">watch the video</a> or simply download (see above) and look at the examples included.</p>
+<p>In it's simplest form, Kratu can take a bunch of data (specifically a Javascript array with objects) and renders it.</p>
 
-<p>Otherwise, here's a quick look at how to render a simple report</p>
+<p>You can easily add pagination and have an awesome table renderer, but it offers so much more if you add a <em>report definition</em>.
+This allows you to specify how Kratu will interpret your data, by assigning weights and thresholds to each data point category.
+Further still, you can add <em>signal definitions</em> to have full flexibility over how data is processed, formatted and calculated.</p>
 
-<div class="highlight"><pre><span class="c1">// Instantiate a new Kratu object</span>
-<span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Kratu</span><span class="p">();</span>
+<p>In this tutorial we'll walk you through the various steps to build a full fledged analysis.</p>
 
-<span class="c1">// Set the data we'd like to render</span>
-<span class="nx">kratu</span><span class="p">.</span><span class="nx">setEntities</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<h2>Getting started</h2>
 
-<span class="c1">// Tell Kratu where to render our report</span>
-<span class="nx">kratu</span><span class="p">.</span><span class="nx">setRenderElement</span><span class="p">(</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'kratuReport'</span><span class="p">)</span> <span class="p">);</span>
+<p>Let's create a basic HTML page and include a reference to the Kratu library itself and it's stylesheet.</p>
 
-<span class="c1">// And render it!</span>
-<span class="nx">kratu</span><span class="p">.</span><span class="nx">renderReport</span><span class="p">();</span>
+<p><em>Note: We're assuming you place this page on the root of where you checked out Kratu.</em></p>
+
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Kratu Spaceship Selector<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"css/kratu.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">'js/kratu.js'</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Kratu Spaceship Selector<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"kratuReport"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 </pre></div>
 
-<h2>In-depth tutorial</h2>
+<h2>Loading the data</h2>
 
-<p>To get a better understanding of what Kratu has to offer, go through <a href="https://github.com/google/kratu/generated_pages/tutorial">this in-depth tutorial</a>, where we'll build a <a href="https://github.com/google/kratu/examples/spaceshipselector/">product comparison analysis</a> that can help users figure out which spaceship to buy.</p>
+<p>Our data comes from a CSV-file with all the available spaceship models. You can find it in the <a href="https://github.com/google/kratu/tree/master/examples/spaceshipselector/">examples/spaceshipselector/</a> folder.</p>
 
-<h2>Fine print</h2>
+<p>Kratu comes with a simple CSV-loader/parser, so let's use that.
+Include the following lines as the last line in the &lt;head&gt; section:</p>
 
-<p>Pull requests are very much appreciated. Please sign the <a href="http://code.google.com/legal/individual-cla-v1.0.html">Google Code contributor license agreement</a> (There is a convenient online form) before submitting.</p>
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">'js/dataproviders/csv.js'</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+  <span class="c1">// We'll do our coding here</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<p>The following snippet will use our CSV-loader to load our spaceships and log them to our console:</p>
+
+<div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">csvProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuCSVProvider</span><span class="p">();</span>
+  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ships</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">ships</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>Your console should look something like this:
+<img src="http://google.github.com/kratu/img/tut_console.png" alt="Kratu Overview"></p>
+
+<h2>Rendering a basic report</h2>
+
+<p>Now that we've loaded our spaceships, let's see if we can get Kratu to list our data directly. Change your code to reflect the following:</p>
+
+<div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">csvProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuCSVProvider</span><span class="p">();</span>
+  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ships</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// Instantiate a new Kratu object</span>
+    <span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Kratu</span><span class="p">();</span>
+
+    <span class="c1">// Give Kratu our spaceships</span>
+    <span class="nx">kratu</span><span class="p">.</span><span class="nx">setEntities</span><span class="p">(</span><span class="nx">spaceships</span><span class="p">);</span>
+
+    <span class="c1">// Tell Kratu where to render our report</span>
+    <span class="nx">kratu</span><span class="p">.</span><span class="nx">setRenderElement</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'kratuReport'</span><span class="p">));</span>
+
+    <span class="c1">// And render it!</span>
+    <span class="nx">kratu</span><span class="p">.</span><span class="nx">renderReport</span><span class="p">();</span>
+
+  <span class="p">});</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>And we should be able to see our first report:
+<img src="http://google.github.com/kratu/img/tut_firstreport.png" alt="Our first report"></p>
+
+<h2>Adding some weights</h2>
+
+<p>All right! Looks good, but not super useful as a comparison tool.</p>
+
+<p>Let's add some weights and thresholds. Weights allow you to tell Kratu how important each datapoint is, relative to the other.
+You can also supply thresholds, so Kratu knows when a datapoint is good or bad (see the <em>Signals, weights and thresholds</em> section in the end of this document for more information).</p>
+
+<p>The easiest way to supply Kratu with this information, is to define a <em>report definition</em>.
+The report definition is a javascript data structure that you can easily serialize to/from <a href="http://en.wikipedia.org/wiki/JSON">JSON</a>.</p>
+
+<p>Here's a basic report definition that allows us to put weights and thresholds to the different datapoints for our spaceships:</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">"signalDefinitionUrl"</span><span class="p">:</span><span class="s2">"./spaceships_signaldefinition.js"</span><span class="p">,</span>
+  <span class="nt">"signals"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"name"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Name"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"model"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Model"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"imageUrl"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Image"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"cost"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Cost"</span><span class="p">,</span> <span class="nt">"weight"</span><span class="p">:</span><span class="mi">100</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"resellValueDrop"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Resell Value Drop"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">80</span><span class="p">,</span> <span class="nt">"lMax"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="nt">"lMin"</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"engineSize"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Engine Size"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">10</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"propulsionType"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Propulsion Type"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="nt">"lMin"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="nt">"lMax"</span><span class="p">:</span><span class="mi">100</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"hyperdrive"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Hyperdrive"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span> <span class="nt">"hMin"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="nt">"hMax"</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"kesselRunRecord"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Kessel Run Record"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">20</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"freightCapacity"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Freight Capacity"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">30</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"passengerCapacity"</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span><span class="s2">"Passenger Capacity"</span><span class="p">,</span>
+     <span class="nt">"weight"</span><span class="p">:</span><span class="mi">40</span><span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Save this as <em>spaceship_reportdefinition.json</em></p>
+
+<p>(As you will see later, you can also supply a signal defintion written in javascript, adding powerful flexibility to your signals. The reason they are separated is to make it easy to store the report definition, enabling individual settings per user of your report. It also allows for code reuse, as the same signal definitions can be use by multiple report definitions).</p>
+
+<p>To load this as a file, we use the simple JSON-loader supplied (feel free to use your favorite framwork instead).
+Include the KratuJsonProvider...</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">'../../js/dataproviders/json.js'</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>...and load <em>and</em> set the reportdefinition:</p>
+
+<div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">csvProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuCSVProvider</span><span class="p">();</span>
+  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ships</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Instantiate a new Kratu object</span>
+    <span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Kratu</span><span class="p">();</span>
+
+    <span class="c1">// Give Kratu our spaceships</span>
+    <span class="nx">kratu</span><span class="p">.</span><span class="nx">setEntities</span><span class="p">(</span><span class="nx">spaceships</span><span class="p">);</span>
+
+    <span class="c1">// Tell Kratu where to render our report</span>
+    <span class="nx">kratu</span><span class="p">.</span><span class="nx">setRenderElement</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'kratuReport'</span><span class="p">));</span>
+
+    <span class="kd">var</span> <span class="nx">jsonProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuJsonProvider</span><span class="p">();</span>
+    <span class="nx">jsonProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_reportdefinition.json'</span><span class="p">,</span> 
+      <span class="kd">function</span> <span class="p">(</span><span class="nx">reportDefinition</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">kratu</span><span class="p">.</span><span class="nx">setReportDefinition</span><span class="p">(</span><span class="nx">reportDefinition</span><span class="p">);</span>
+        <span class="nx">kratu</span><span class="p">.</span><span class="nx">renderReport</span><span class="p">();</span>
+      <span class="p">})</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>Now it's starting to look like something:</p>
+
+<p><img src="http://google.github.com/kratu/img/tut_addedweights.png" alt="Added some weights"></p>
+
+<h2>Ranking and formatting</h2>
+
+<p>But we can do even better!</p>
+
+<p>Surely we need to consider price and other signals. We don't want to set specific limits to these, instead we want them to be dynamically ranked based on the other values.</p>
+
+<p>In addition, we want to format our values properly, and we want to display the images of the models.</p>
+
+<p>We would also want to make the user able to toggle which columns s/he cares about.</p>
+
+<p>To do this, we need to add a bit of javascript:
+First, let's update our report definition, so that Kratu knows that we will use a Javascript file to tell Kratu how each signal should be interpreted:</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">"signalDefinitionUrl"</span><span class="p">:</span><span class="s2">"./spaceships_signaldefinition.js"</span><span class="p">,</span>
+  <span class="nt">"signals"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"name"</span><span class="p">,</span> <span class="nt">"name"</span> <span class="p">:</span> <span class="s2">"Name"</span><span class="p">},</span>
+    <span class="err">....</span>
+</pre></div>
+
+<p>Then, let's create the file <em>spaceships_signaldefinition.js</em> and add the following to it:</p>
+
+<div class="highlight"><pre> <span class="kd">function</span> <span class="nx">KratuSignalDefinitions</span><span class="p">(</span><span class="nx">kratu</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// For name and model, we want to use the overall score.</span>
+  <span class="c1">// This can be done by using the built in sumScore function</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">sumScore</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">model</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">sumScore</span>
+  <span class="p">};</span>
+
+  <span class="c1">// We want to be able to render the image using the url in</span>
+  <span class="c1">// A custom format function allows us to do this</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">imageUrl</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">elm</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'img'</span><span class="p">);</span>
+      <span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="nx">elm</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'spaceshipImage'</span><span class="p">);</span>
+      <span class="nx">elm</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="c1">// Define common event handler signals to be togglable</span>
+  <span class="kd">var</span> <span class="nx">toggleSignal</span> <span class="o">=</span> <span class="p">{</span><span class="nx">click</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">eventHandlers</span><span class="p">.</span><span class="nx">toggleSignal</span><span class="p">};</span>
+
+  <span class="c1">// For the other signals, we're using built in formatters, and</span>
+  <span class="c1">// built in ranking calculations instead of thresholds</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">cost</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="nx">money</span><span class="p">,</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankSmallToLarge</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">resellValueDrop</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="nx">percentage</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">engineSize</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="nx">singleDecimal</span><span class="p">,</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankLargeToSmall</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">hyperdrive</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="kr">boolean</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">kesselRunRecord</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="nx">integer</span><span class="p">,</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankSmallToLarge</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">freightCapacity</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankLargeToSmall</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">passengerCapacity</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="nx">integer</span><span class="p">,</span>
+    <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankLargeToSmall</span><span class="p">,</span>
+    <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="nx">toggleSignal</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>(Have a look through the comments to better understand what's going on)</p>
+
+<p>No need to update the code in our page, as Kratu will automatically load the specified signal definition supplied in the report definition.</p>
+
+<h2>Final report</h2>
+
+<p>Congrats! We now have a complete spaceship comparison tool!
+Notice the toggled columns:
+<img src="http://google.github.com/kratu/img/tut_finalreport.png" alt="Final report"></p>
+
+<h1>More Info</h1>
+
+<p>Kratu code itself is documented using JSDoc.</p>
+
+<p>Below you will find detailed documentation on most of Kratu's features.</p>
+
+<p>Take a deep dive in the examples included for more advanced usage.</p>
+
+<h3>Summaries and averages</h3>
+
+<p>You can easily add summary and average rows to your report through the <em>report definition</em>.
+Add a <em>summaryRows</em> key to the <em>report definition</em> with an array containing one object for each row you want to add.
+The row objects must have keys for <em>type</em> (_average_ or <em>sum</em>) and <em>location</em> (_top_ or <em>bottom</em>):</p>
+
+<div class="highlight"><pre>  <span class="s2">"summaryRows"</span><span class="err">:</span><span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"location"</span><span class="p">:</span><span class="s2">"top"</span><span class="p">,</span>
+      <span class="nt">"type"</span>    <span class="p">:</span><span class="s2">"average"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">"location"</span><span class="p">:</span><span class="s2">"bottom"</span><span class="p">,</span>
+      <span class="nt">"type"</span>    <span class="p">:</span><span class="s2">"sum"</span><span class="p">,</span>
+    <span class="p">}</span>
+</pre></div>
+
+<p>For an advanced usage, check out the <a href="https://github.com/google/kratu/tree/master/examples/adwordshealtcheck">AdWords Healtcheck example</a>.</p>
+
+<h3>Data composition</h3>
+
+<p>Datapoints for a given entity can be taken directly and unprocessed from the data source, or it can be combined by specifying a getData-function in the signal definition.
+As an example, consider the following:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">resellValue</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">getData</span><span class="o">:</span><span class="kd">function</span> <span class="p">(</span><span class="nx">spaceship</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">spaceship</span><span class="p">.</span><span class="nx">cost</span> <span class="o">-</span> <span class="p">(</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">cost</span> <span class="o">*</span> <span class="nx">spaceship</span><span class="p">.</span><span class="nx">resellValueDrop</span> <span class="o">/</span> <span class="mi">100</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div>
+
+<p>You can even introduce new signals, but remember to include these in the report definition, as this is what defines what ends up in the final report.</p>
+
+<h3>Pagination</h3>
+
+<p>Kratu has built in pagination support. This helps rendering times when you're dealing with a lot of data.
+See the <a href="https://github.com/google/kratu/tree/master/examples/bugreport">bugreport example</a> for a fully implemented solution.</p>
+
+<p>The methods supplied to support pagination are as follows:</p>
+
+<ul>
+<li>setPageSize(pageSize)</li>
+<li>getPageSize()</li>
+<li>clearPageSize()</li>
+<li>getNumPages()</li>
+<li>setCurrentPage(currentPage)</li>
+<li>getCurrentPage()</li>
+<li>renderPage(?pageNumber, ?callback)</li>
+<li>renderCurrentPage(?callback)</li>
+<li>renderPreviousPage(?callback)</li>
+<li>renderNextPage(?callback)</li>
+</ul><h3>Eventhandlers</h3>
+
+<p>Kratu supports adding event handlers to both the cells in the report as well as the header. All standard Javascript events are supported.
+Simply add your handlers in the <em>signal defintion</em> like so:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">signal</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">click</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="c1">//...</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">cellEventHandlers</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">click</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="c1">//...</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>Your handler will be called with the Kratu instance as the context object, and it will be supplied with an argument object comprising of </p>
+
+<ul>
+<li>elm - the calling element object</li>
+<li>evt - the event object</li>
+<li>signal - the signal object</li>
+<li>entity - the data object (only for cellEventHandlers)</li>
+<li>score - the calculated score for this signal and entity (only for cellEventHandlers)</li>
+<li>value - the value for this signal and entity (only for cellEventHandlers)</li>
+</ul><h3>Toggling of signals</h3>
+
+<p>Kratu has built in support for toggling which signal goes into the overall calculation and prioritization of data.
+To add toggling, simply add the built in <em>kratu.eventHandlers.toggleSignal</em> as a click handler in the signal definitions:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">signalToBeTogglable</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">click</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">eventHandlers</span><span class="p">.</span><span class="nx">toggleSignal</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>Dynamic Adjustments of signals</h3>
+
+<p>Similarly to toggling, you can add UI for adjustments of signals (see the <a href="https://github.com/google/kratu/tree/master/examples/adwordshealtcheck">AdWords Healtcheck example</a> for a working example):</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">signalToBeTogglable</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">headerEventHandlers</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">click</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">eventHandlers</span><span class="p">.</span><span class="nx">displaySignalAdjustment</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>Formatting</h3>
+
+<p>Signals can format their values and the cell they are presented in by supplying a format function in the <em>signal definition</em>;</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">signalToBeFormatted</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">format</span><span class="o">:</span><span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">cell</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">cell</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">textAlign</span> <span class="o">=</span> <span class="s1">'center'</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">value</span><span class="o">+</span><span class="s1">' kg'</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>Kratu supplies built in formatters that can be used like this:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">signalToBeFormatted</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">format</span><span class="o">:</span><span class="nx">kratu</span><span class="p">.</span><span class="nx">formatters</span><span class="p">.</span><span class="nx">percentage</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>Available formatters are:</p>
+
+<ul>
+<li>boolean</li>
+<li>decimal</li>
+<li>percentage</li>
+<li>money</li>
+<li>singleDecimal</li>
+<li>integer</li>
+<li>string</li>
+</ul><h3>Custom score calculations</h3>
+
+<p>You can define how Kratu should calculate a score by defining a calculateScore function in the <em>signal definition</em>:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">signal</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">calculateScore</span><span class="o">:</span><span class="kd">function</span> <span class="p">(</span><span class="nx">spaceship</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">signal</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">spaceship</span><span class="p">.</span><span class="nx">isPoorPerformer</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">*</span> <span class="nx">signal</span><span class="p">.</span><span class="nx">weight</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>(Calling context object is the Kratu Signal object.)</p>
+
+<p>Advanced: If your function returns another function, this will be called after all signals have been calculated with a summary object containing the sum of all scores and the sum of all weights
+This allows you to do intermediate staged calculations which you can use in the summaries.</p>
+
+<h3>Sum Score for a signal</h3>
+
+<p>If you want a signal to be marked with the overall score and color of the entity, you can utilize the built in sumScore mechanism as we saw in the name and model signals above:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">sumScore</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>Ranking and Sum Score</h3>
+
+<p>If your signal has an unknown range of potential value (ie. you can't set predetermined thresholds), you might want to consider using the built in rank calculation.
+This looks at all your values for the particular signal and uses the maximum and minium value as boundaries for a distributed percentage. It then multiplies this value with the weight, yielding the score for that signal.</p>
+
+<p>Like we saw above, this can look like this:</p>
+
+<div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">kesselRunRecord</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankSmallToLarge</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">freightCapacity</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">calculateWeight</span><span class="o">:</span> <span class="nx">kratu</span><span class="p">.</span><span class="nx">calculations</span><span class="p">.</span><span class="nx">rankLargeToSmall</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>Signals, weights and thresholds</h3>
+
+<p>A <em>Kratu Signal</em> is basically what ends up as the column in your report
+The Kratu Signal gets defined by the <em>report definition</em> and values found here will override any values specified in the optional <em>signal definition</em>.
+Unless specified otherwise, each signal get's a calculated score. This score is based upon the <em>weight</em> of the signal and the <em>thresholds</em> of the signals (see below).</p>
+
+<p>The report definition can describe the following attributes of a signal:</p>
 
 <dl>
-<dt>Author</dt>
-<dd><a href="https://plus.google.com/115142215538295075810">Tarjei Vassbotn (Google Inc.)</a></dd>
-  <dt>Copyright</dt>
-<dd>Copyright © 2013 Google, Inc.</dd>
-  <dt>License</dt>
-<dd>Apache 2.0</dd>
+<dt>key</dt>
+<dd>String (**mandatory**), identifying name of the signal</dd>
+  <dt>name</dt>
+<dd>String, descriptive name of signal</dd>
+  <dt>weight</dt>
+<dd>Float, Maximal impact signal can represent (0.0 - 100.0)</dd>
+  <dt>lMax</dt>
+<dd>Float, lowest point of low threshold where signal yields maximum opportunity. When getData 
+  </dd>
+<dt>lMin</dt>
+<dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData &gt; lMin (and 
+  </dd>
+<dt>hMin</dt>
+<dd>Float, lowest point of high threshold where signal yields minimum opportunity. When getData  lMin, if defined), calculated weight = 0</dd>
+  <dt>hMax</dt>
+<dd>Float, highest point of high threshold where signal yields maximum opportunity.  When getData &gt;= hMax, calculated weight = weight</dd>
+  <dt>scaleExponent</dt>
+<dd>float, used to ease the curve between lMax/lMin and hMin/hMax - see adjustment of signal to visualize.</dd>
+</dl><p>The signal definition can additionaly describe:</p>
+
+<dl>
+<dt>getData</dt>
+<dd>Function, method that will be called to get the data for this signal. If not provided, the signals key will be used to lookup the corresponding value in the account-object</dd>
+  <dt>range</dt>
+<dd>Object, provides boundaries for adjusting the signal and should contain an object with a min, max and step key/value</dd>
+  <dt>format</dt>
+<dd>Function, function that takes the return data from getData as first argument</dd>
+  <dt>isBoolean</dt>
+<dd>Boolean, flag to show that this is a boolean signal</dd>
+  <dt>hasCalculation</dt>
+<dd>Function, method that determines wether to calculate a score for this signal</dd>
+  <dt>calculateWeight</dt>
+<dd>Function, overridable method for calculating the score for this signal.</dd>
 </dl>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/google">google</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
