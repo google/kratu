@@ -446,7 +446,7 @@ Unless specified otherwise, each signal get's a calculated score. This score is 
 The report definition can describe the following attributes of a signal:
 
 <dl>
-  <dt>key</dt><dd>String (**mandatory**), identifying name of the signal</dd>
+  <dt>key</dt><dd>String (mandatory), identifying name of the signal</dd>
   <dt>name</dt><dd>String, descriptive name of signal</dd>
   <dt>weight</dt><dd>Float, Maximal impact signal can represent (0.0 - 100.0)</dd>
   <dt>lMax</dt><dd>Float, lowest point of low threshold where signal yields maximum opportunity. When getData &lt;= lMax, calc. weight = weight</dd>
