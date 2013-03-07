@@ -37,7 +37,7 @@ kratu.renderReport();
 ```
 
 ## In-depth tutorial
-To get a better understanding of what Kratu has to offer, go through [this in-depth tutorial](http://google.github.com/kratu/tutorial.html), where we'll build a [product comparison analysis](https://github.com/google/kratu/tree/master/examples/spaceshipselector) that can help users figure out which spaceship to buy.
+To get a better understanding of what Kratu has to offer, go through [this in-depth tutorial](http://google.github.com/kratu/tutorial/), where we'll build a [product comparison analysis](https://github.com/google/kratu/tree/master/examples/spaceshipselector) that can help users figure out which spaceship to buy.
 
 ## Fine print
 Pull requests are very much appreciated. Please sign the [Google Code contributor license agreement](http://code.google.com/legal/individual-cla-v1.0.html) (There is a convenient online form) before submitting.
