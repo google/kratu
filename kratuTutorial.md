@@ -311,10 +311,10 @@ The methods supplied to support pagination are as follows:
 * getNumPages()
 * setCurrentPage(currentPage)
 * getCurrentPage()
-* renderPage(?pageNumber, ?callback)
-* renderCurrentPage(?callback)
-* renderPreviousPage(?callback)
-* renderNextPage(?callback)
+* renderPage(opt_pageNumber, opt_callback)
+* renderCurrentPage(opt_callback)
+* renderPreviousPage(opt_callback)
+* renderNextPage(opt_callback)
 
 ### Eventhandlers
 Kratu supports adding event handlers to both the cells in the report as well as the header. All standard Javascript events are supported.
