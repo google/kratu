@@ -90,3 +90,11 @@ a.downloadLink:before {
   text-align:center;
   -webkit-filter: grayscale(70%);
 }
+.loadedFilesSuccessfully {
+  color: gray;
+}
+.loadedFilesFailed {
+  color: red;
+}
+
+

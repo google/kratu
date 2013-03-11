@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-'use strict';
+
 
 /**
  * A simple JSON loader
@@ -22,15 +22,19 @@
  * @param {Object=} opt_options object to controll loader behavior.
  **/
 function KratuJsonProvider(opt_options) {
+  'use strict';
   this.forceReload = opt_options && !!opt_options.forceReload ? true : false;
 }
+
 
 /**
  * Method to load and parse a JSON resource
  * @param {string} url for resource.
  * @param {Function} onSuccess called after successfully loaded a resource.
+ * @param {Function=} opt_onError (optional) error handler.
  **/
-KratuJsonProvider.prototype.load = function(url, onSuccess) {
+KratuJsonProvider.prototype.load = function(url, onSuccess, opt_onError) {
+  'use strict';
   var xhr = new XMLHttpRequest();
 
   if (this.forceReload) {
@@ -53,7 +57,7 @@ KratuJsonProvider.prototype.load = function(url, onSuccess) {
       throw 'Could not call callback with JSON from ' + url + ':\n' + err;
     }
   };
-  xhr.onerror = function(err) {
+  xhr.onerror = opt_onError || function(err) {
     throw 'Could not call ' + url + ':\n' + err;
   };
   xhr.open('GET', url);

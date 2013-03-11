@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
+
+
 /**
  * Signal definitions for the Spaceships Selector
- * 
+ *
  * Define custom behaviour for our signals
  * See Signal section in tutorial for more info
  *
  * @constructor
  * @param {Kratu} kratu class instance.
  **/
- function KratuSignalDefinitions(kratu) {
+function KratuSignalDefinitions(kratu) {
+  'use strict';
   // For name and model, we want to use the overall score.
   // This can be done by using the built in sumScore function
   this.name = {
@@ -36,7 +39,7 @@
   // We want to be able to render the image using the url in
   // A custom format function allows us to do this
   this.imageUrl = {
-    format: function (value, elm) {
+    format: function(value, elm) {
       var img = document.createElement('img');
       img.src = value;
       elm.classList.add('spaceshipImage');

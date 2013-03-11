@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+
 /**
  * Signal definitions for the Bug Report example
  *
@@ -24,7 +26,8 @@
  * @constructor
  * @param {Kratu} kratu class instance.
  **/
- function KratuSignalDefinitions(kratu) {
+function KratuSignalDefinitions(kratu) {
+  'use strict';
   var headerEventHandlers = {click: kratu.eventHandlers.toggleSignal};
   this.ticketId = {
     name: 'Bug ID',

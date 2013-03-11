@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-'use strict';
+
 
 /**
  * UI Adjustments for Kratu Signals
@@ -22,17 +22,27 @@
  * @param {Kratu} kratu class instance.
  **/
 function KratuSignalAdjustments(kratu) {
+  'use strict';
   this.kratu = kratu;
-  this.signalControls_ = ['lMax','lMin','hMin','hMax','weight','scaleExponent'];
+  this.signalControls_ = [
+    'lMax',
+    'lMin',
+    'hMin',
+    'hMax',
+    'weight',
+    'scaleExponent'
+  ];
 }
+
 
 /**
  * Method for displaying the adjustments for this signal
  * @param {KratuSignal} signal to be adjusted.
  * @param {Function} onChangeCallback to be called when adjustments is made.
  **/
-KratuSignalAdjustments.prototype.displayAdjustments =
-  function(signal, onChangeCallback) {
+KratuSignalAdjustments.prototype.displayAdjustments = function(
+    signal, onChangeCallback) {
+  'use strict';
   var adjustments = this;
 
   var container = document.createElement('div');
@@ -70,7 +80,7 @@ KratuSignalAdjustments.prototype.displayAdjustments =
   // Don't do immediate update if there's a lot of rows
   var callbackDelay = adjustments.kratu.getNumEntities() > 50 ? 100 : 0;
 
-  for (var i = 0; i<adjustments.signalControls_.length;i++) {
+  for (var i = 0; i < adjustments.signalControls_.length; i++) {
     var measure = adjustments.signalControls_[i];
     if (signal[measure] === null) {
       continue;
@@ -102,15 +112,15 @@ KratuSignalAdjustments.prototype.displayAdjustments =
   };
   document.addEventListener('keydown', escapeClosesAdjustments, true);
 
-    this.chart = document.createElement('div');
-    this.chart.id = 'kratuSignalChart';
-    this.chart.classList.add('kratuSignalChart');
-    container.appendChild(this.chart);
-    var button = document.createElement('button');
-    button.addEventListener('click', closeAdjustments, true);
-    button.textContent = 'Close';
-    container.appendChild(button);
-    document.body.appendChild(container);
+  this.chart = document.createElement('div');
+  this.chart.id = 'kratuSignalChart';
+  this.chart.classList.add('kratuSignalChart');
+  container.appendChild(this.chart);
+  var button = document.createElement('button');
+  button.addEventListener('click', closeAdjustments, true);
+  button.textContent = 'Close';
+  container.appendChild(button);
+  document.body.appendChild(container);
 
   google.load('visualization', '1.0', {
     callback: function() {
@@ -120,35 +130,37 @@ KratuSignalAdjustments.prototype.displayAdjustments =
   });
 };
 
+
 /**
  * Method for updating the graph and sliders when a signal is adjusted
  * @param {KratuSignal} signal triggering the adjustment.
  * @private
  **/
- KratuSignalAdjustments.prototype.updateMeasures_ = function(signal) {
+KratuSignalAdjustments.prototype.updateMeasures_ = function(signal) {
+  'use strict';
   if (signal.lMin !== null) {
     this.sliderObjects['lMax'].slider.max =
-      parseInt(this.sliderObjects['lMin'].slider.value, 10) -
-      parseInt(signal.range.step, 10);
+        parseInt(this.sliderObjects['lMin'].slider.value, 10) -
+        parseInt(signal.range.step, 10);
     this.sliderObjects['lMin'].slider.min =
-      parseInt(this.sliderObjects['lMax'].slider.value, 10) +
-      parseInt(signal.range.step, 10);
+        parseInt(this.sliderObjects['lMax'].slider.value, 10) +
+        parseInt(signal.range.step, 10);
   }
   if (signal.hMin !== null) {
     this.sliderObjects['hMin'].slider.max =
-      parseInt(this.sliderObjects['hMax'].slider.value, 10) -
-      parseInt(signal.range.step, 10);
+        parseInt(this.sliderObjects['hMax'].slider.value, 10) -
+        parseInt(signal.range.step, 10);
     this.sliderObjects['hMax'].slider.min =
-    parseInt(this.sliderObjects['hMin'].slider.value, 10) +
-    parseInt(signal.range.step, 10);
+        parseInt(this.sliderObjects['hMin'].slider.value, 10) +
+        parseInt(signal.range.step, 10);
   }
   if (signal.hMin !== null && signal.lMin !== null) {
     this.sliderObjects['lMin'].slider.max =
-      parseInt(this.sliderObjects['hMin'].slider.value, 10) -
-      parseInt(signal.range.step, 10);
+        parseInt(this.sliderObjects['hMin'].slider.value, 10) -
+        parseInt(signal.range.step, 10);
     this.sliderObjects['hMin'].slider.min =
-      parseInt(this.sliderObjects['lMin'].slider.value, 10) +
-      parseInt(signal.range.step, 10);
+        parseInt(this.sliderObjects['lMin'].slider.value, 10) +
+        parseInt(signal.range.step, 10);
   }
 
   // Create a chart, visualizing the weights for all possible signal values.
@@ -186,6 +198,8 @@ KratuSignalAdjustments.prototype.displayAdjustments =
     }
   });
 };
+
+
 /**
  * Method for creating a slider element.
  * @param {Object} args for this slider.
@@ -193,6 +207,7 @@ KratuSignalAdjustments.prototype.displayAdjustments =
  * @private
  **/
 KratuSignalAdjustments.prototype.createSliderObject_ = function(args) {
+  'use strict';
   var min = args.signal.range.min;
   var max = args.signal.range.max;
   var step = args.signal.range.step;

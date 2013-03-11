@@ -4,11 +4,13 @@ Kratu
 
 > [Kratu is a Sanskrit word](http://spokensanskrit.de/index.php?tinput=kratu&script=&direction=SE&link=yes) and means enlightenment, understanding and intelligence.
 
-You can use Kratu to analyze data for support queue prioritization, account quality optimization, performance analysis, product comparison and much more.
-![Example Kratu Report](http://google.github.com/kratu/img/tut_finalreport.png)
-
 It can compare similar objects by calculating individual scores for all the features we care about.
 Each feature is highlighted according to their score, rendering a prioritized heatmap where the objects of most significance float to the top.
+
+**Have a look at our [tutorial](http://google.github.com/kratu/tutorial/) and dive straight into the deep end, or read on for a more gentle introduction.**
+
+You can use Kratu to analyze data for support queue prioritization, account quality optimization, performance analysis, product comparison and much more.
+![Example Kratu Report](http://google.github.com/kratu/img/tut_finalreport.png)
 
 ## Installation
 Simply [download Kratu](https://github.com/google/kratu/archive/master.zip) and extract, or check out the repository:

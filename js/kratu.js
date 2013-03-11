@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-'use strict';
+
 
 /**
  * The Kratu analysis engine
@@ -22,6 +22,7 @@
  * @constructor
  **/
 function Kratu() {
+  'use strict';
   var kratu = this;
 
   /**
@@ -97,14 +98,14 @@ function Kratu() {
   /**
    * Sorted array of entities with calculated scores
    * @private
-   * @type Array<Object>
+   * @type Array< {Object} >
    **/
   kratu.calculatedEntities_ = [];
 
   /**
    * Array of summarylines to be rendered in the report
    * @private
-   * @type Array<Object>
+   * @type Array< {Object} >
    **/
   kratu.summaries_ = [];
 
@@ -113,6 +114,7 @@ function Kratu() {
   kratu.eventHandlers = kratu.getEventHandlers_();
   kratu.calculations = kratu.getCalculations_();
 }
+
 
 /**
  * Default heat map colors. Can be overriden by the report definition
@@ -123,6 +125,7 @@ Kratu.DEFAULT_HEAT_MAP = {
   min: 'rgb(200,220,250)',
   max: 'rgb(0,160,200)'
 };
+
 
 /**
  * Collection of built in formatters
@@ -135,7 +138,7 @@ Kratu.prototype.getFormatters_ = function() {
   return {
     'boolean': function(val, cell) {
       cell.classList.add('kratuCellTypeBoolean');
-      return val && val !== '0'? 'True' : 'False';
+      return val && val !== '0' ? 'True' : 'False';
     },
     'decimal': function(val, cell, numDecimals) {
       if (val !== null && !isNaN(val)) {
@@ -165,9 +168,9 @@ Kratu.prototype.getFormatters_ = function() {
         var integer = parseInt(val = Math.abs(val).toFixed(2), 10) + '';
         var numThousands = (integer.length > 3) ? integer.length % 3 : 0;
         return sign +
-          (numThousands ? integer.substr(0, numThousands) + ' ' : '') +
-          integer.substr(numThousands).replace(/(\d{3})(?=\d)/g, '$1' + ' ') +
-          '.' + Math.abs(val - integer).toFixed(2).slice(2);
+            (numThousands ? integer.substr(0, numThousands) + ' ' : '') +
+            integer.substr(numThousands).replace(/(\d{3})(?=\d)/g, '$1' + ' ') +
+            '.' + Math.abs(val - integer).toFixed(2).slice(2);
       }
     },
     'singleDecimal': function(val, cell) {
@@ -184,6 +187,7 @@ Kratu.prototype.getFormatters_ = function() {
     }
   };
 };
+
 
 /**
  * Collection of built in event handlers
@@ -204,6 +208,7 @@ Kratu.prototype.getEventHandlers_ = function() {
   };
 };
 
+
 /**
  * Collection of built in score calculations
  * Used in initialization to expose in the form kratu.calculations.*
@@ -215,17 +220,17 @@ Kratu.prototype.getCalculations_ = function() {
 
   // Method to create a ranking. Direction can be 1 (small to large) or
   // 0 (large to small)
-  var createRankingCalculation = function (direction) {
-     return function(entity) {
+  var createRankingCalculation = function(direction) {
+    return function(entity) {
       var signal = this;
       // If we don't have the min and max values for this signal, let's iterate
       // and find them and store them in kratu.calculationsRankings_
-      if (!kratu.calculationsRankings_) {kratu.calculationsRankings_ = {}};
+      if (!kratu.calculationsRankings_) {kratu.calculationsRankings_ = {}}
       if (!kratu.calculationsRankings_[signal.key]) {
         kratu.calculationsRankings_[signal.key] = {};
         var max, min;
         var entities = kratu.getEntities();
-        for (var i=0; i<entities.length; i++) {
+        for (var i = 0; i < entities.length; i++) {
           var value = entities[i][signal.key];
           if (max === undefined || value > max) { max = parseFloat(value); }
           if (min === undefined || value < min) { min = parseFloat(value); }
@@ -242,16 +247,16 @@ Kratu.prototype.getCalculations_ = function() {
       }
       else {
         var relativeRank = (
-          entity[signal.key] -
-          kratu.calculationsRankings_[signal.key].min
-        ) / (
-          kratu.calculationsRankings_[signal.key].max -
-          kratu.calculationsRankings_[signal.key].min
-        );
-        return Math.abs(relativeRank-direction) * (signal.weight / 100);
+            entity[signal.key] -
+            kratu.calculationsRankings_[signal.key].min
+            ) / (
+            kratu.calculationsRankings_[signal.key].max -
+            kratu.calculationsRankings_[signal.key].min
+            );
+        return Math.abs(relativeRank - direction) * (signal.weight / 100);
       }
     };
-  }
+  };
 
   return {
     // sumScore can be used to return the overall weight for this entity
@@ -267,6 +272,7 @@ Kratu.prototype.getCalculations_ = function() {
   };
 };
 
+
 /**
  * Method for setting a persistent setting
  * @see #getPersistentSetting
@@ -281,6 +287,7 @@ Kratu.prototype.setPersistentSetting = function(key, value) {
     window.localStorage[key] = JSON.stringify(value);
   }
 };
+
 
 /**
  * Method for getting a persistent setting
@@ -304,11 +311,12 @@ Kratu.prototype.getPersistentSetting = function(key, ifNull) {
   }
 };
 
+
 /**
  * Setter for report definition
  * See example and general documentation for structure of report definition
  * @param {Object} report containing report.
- * @param {Function=} opt_callback (optional) to be called after report is loaded.
+ * @param {Function=} opt_callback (optional), called when report is loaded.
  **/
 Kratu.prototype.setReportDefinition = function(report, opt_callback) {
   var kratu = this;
@@ -319,12 +327,12 @@ Kratu.prototype.setReportDefinition = function(report, opt_callback) {
 
   // Since the ReportDefinition might define an external SignalDefinition
   // which are loaded asynchronously, we create a function to avoid DRY
-  var setReport_ = function () {
+  var setReport_ = function() {
     kratu.setSignals(report.signals);
     kratu.reportDefinition_ = report;
     if (opt_callback) {
       opt_callback();
-    }   
+    }
   };
 
   // If we have a signalDefinitionUrl in the reportDefinition, let's load it
@@ -351,22 +359,24 @@ Kratu.prototype.setReportDefinition = function(report, opt_callback) {
   }
 };
 
+
 /**
  * Getter for report definition
  * See example and general documentation for structure of report definition
  * @return {Object} containing report.
  **/
- Kratu.prototype.getReportDefinition = function() {
+Kratu.prototype.getReportDefinition = function() {
   var kratu = this;
   return kratu.reportDefinition_;
 };
+
 
 /**
  * Setter for signals
  * Usually never set manually, use the report definition/signal definition
  * @param {Array.<Object>} signals containing signal objects.
  **/
- Kratu.prototype.setSignals = function(signals) {
+Kratu.prototype.setSignals = function(signals) {
   var kratu = this;
   if (!signals || !signals instanceof Array || !signals[0] instanceof Object) {
     throw 'No signals found';
@@ -376,7 +386,7 @@ Kratu.prototype.setReportDefinition = function(report, opt_callback) {
   }
   for (var i = 0; i < signals.length; i++) {
     var signalKey = signals[i].key;
-    var signalDefinition = {name:signalKey};
+    var signalDefinition = {name: signalKey};
     // Use signals in signalDefinition as starting point
     for (var defKey in kratu.signalDefinitions_[signalKey]) {
       signalDefinition[defKey] = kratu.signalDefinitions_[signalKey][defKey];
@@ -389,6 +399,8 @@ Kratu.prototype.setReportDefinition = function(report, opt_callback) {
     kratu.signals_.push(signal);
   }
 };
+
+
 /**
  * Getter for signals
  * @return {Array.<Object>} containing signal objects.
@@ -398,15 +410,17 @@ Kratu.prototype.getSignals = function() {
   return kratu.signals_;
 };
 
+
 /**
  * Setter for pageSize
  * Setting to 0 or null clears the pageSize
- * @param {?number} pageSize containing signal objects.
+ * @param {number=} opt_pageSize containing signal objects.
  **/
-Kratu.prototype.setPageSize = function(pageSize) {
+Kratu.prototype.setPageSize = function(opt_pageSize) {
   var kratu = this;
-  kratu.pageSize_ = pageSize;
+  kratu.pageSize_ = opt_pageSize;
 };
+
 
 /**
  * Getter for pageSize
@@ -417,6 +431,7 @@ Kratu.prototype.getPageSize = function() {
   return kratu.pageSize_;
 };
 
+
 /**
  * Method for explicitly clear the pageSize
  **/
@@ -424,6 +439,7 @@ Kratu.prototype.clearPageSize = function() {
   var kratu = this;
   kratu.pageSize_ = null;
 };
+
 
 /**
  * Method for getting the calculated number of pages
@@ -442,6 +458,7 @@ Kratu.prototype.getNumPages = function() {
   }
   return Math.ceil(numEntities / pageSize);
 };
+
 
 /**
  * Setter for currentPage
@@ -467,6 +484,7 @@ Kratu.prototype.setCurrentPage = function(currentPage) {
   kratu.setPersistentSetting('currentPage', kratu.currentPage_);
 };
 
+
 /**
  * Getter for currentPage
  * Defaults to 1 if nothing is specified
@@ -476,6 +494,7 @@ Kratu.prototype.getCurrentPage = function() {
   var kratu = this;
   return kratu.currentPage_;
 };
+
 
 /**
  * Setter of flag wether we have rendered a report
@@ -487,6 +506,7 @@ Kratu.prototype.setHasRendered_ = function(value) {
   kratu.hasRendered_ = value;
 };
 
+
 /**
  * Getter of flag wether we have rendered a report
  * @return {boolean} rendered = true.
@@ -495,6 +515,7 @@ Kratu.prototype.getHasRendered = function() {
   var kratu = this;
   return kratu.hasRendered_;
 };
+
 
 /**
  * Setter of Element to be rendered to
@@ -516,6 +537,7 @@ Kratu.prototype.setRenderElement = function(elm) {
   kratu.renderElement_ = elm;
 };
 
+
 /**
  * Getter of render element
  * @return {Element} Note: Can be different to setElement.
@@ -525,6 +547,7 @@ Kratu.prototype.getRenderElement = function() {
   var kratu = this;
   return kratu.renderElement_;
 };
+
 
 /**
  * Setter of the entities
@@ -536,6 +559,7 @@ Kratu.prototype.setEntities = function(entities) {
   kratu.entities_ = entities;
 };
 
+
 /**
  * Getter of the entities
  * @return {Array.<Object>} the entities.
@@ -544,6 +568,8 @@ Kratu.prototype.getEntities = function() {
   var kratu = this;
   return kratu.entities_;
 };
+
+
 /**
  * Get the number of entities currently in the analysis
  * @return {number} convenience method for calculating the number of entities.
@@ -556,6 +582,7 @@ Kratu.prototype.getNumEntities = function() {
   return kratu.entities_.length;
 };
 
+
 /**
  * Setter of calculated (analyzed) entities
  * @see #calculateEntities_
@@ -566,6 +593,7 @@ Kratu.prototype.setCalculatedEntities_ = function(entities) {
   var kratu = this;
   kratu.calculatedEntities_ = entities;
 };
+
 
 /**
  * Getter of calculated (analyzed) entities
@@ -578,6 +606,7 @@ Kratu.prototype.getCalculatedEntities_ = function() {
   return kratu.calculatedEntities_;
 };
 
+
 /**
  * Setter of calculated (analyzed) summaries
  * @see #calculateSummaries_
@@ -588,6 +617,7 @@ Kratu.prototype.setSummaries_ = function(entities) {
   var kratu = this;
   kratu.summaries_ = entities;
 };
+
 
 /**
  * Getter of calculated (analyzed) summaries
@@ -600,105 +630,112 @@ Kratu.prototype.getSummaries_ = function() {
   return kratu.summaries_;
 };
 
+
 /**
  * Method for rendering a specific page
  * @see #setPageSize
- * @param {?number} pageNumber - if no page number supplied renders page 1.
- * @param {?Function} callback to be called when rendering is finished.
+ * @param {number=} opt_pageNumber - if no page number supplied renders page 1.
+ * @param {Function=} opt_callback to be called when rendering is finished.
  **/
-Kratu.prototype.renderPage = function(pageNumber, callback) {
+Kratu.prototype.renderPage = function(opt_pageNumber, opt_callback) {
   var kratu = this;
-  if (pageNumber === null) {
-    if (!pageNumber) {
-      pageNumber = 1;
+  if (opt_pageNumber === null) {
+    if (!opt_pageNumber) {
+      opt_pageNumber = 1;
       console.warn('No pageNumber supplied, using 1');
     }
   }
-  kratu.setCurrentPage(pageNumber);
+  kratu.setCurrentPage(opt_pageNumber);
   var to = (kratu.getPageSize() * kratu.getCurrentPage() - 1);
-  if (pageNumber == kratu.getNumPages()) {
+  if (opt_pageNumber == kratu.getNumPages()) {
     to = kratu.getNumEntities();
   }
   kratu.render_({
     from: kratu.getPageSize() * (kratu.getCurrentPage() - 1),
     to: to,
-    callback: callback,
+    callback: opt_callback,
     keepHeader: true
   });
 };
+
 
 /**
  * Method for rendering the currentPage
  * @see #setPageSize
  * @see #setCurrentPage
- * @param {?Function} callback to be called when rendering is finished.
+ * @param {Function=} opt_callback to be called when rendering is finished.
  **/
-Kratu.prototype.renderCurrentPage = function(callback) {
+Kratu.prototype.renderCurrentPage = function(opt_callback) {
   var kratu = this;
   if (!kratu.getCurrentPage()) {
     kratu.setCurrentPage(1);
   }
-  kratu.renderPage(kratu.getCurrentPage(), callback);
+  kratu.renderPage(kratu.getCurrentPage(), opt_callback);
 };
+
 
 /**
  * Method for rendering the previousPage
  * @see #setPageSize
  * @see #setCurrentPage
- * @param {?Function} callback to be called when rendering is finished.
+ * @param {Function=} opt_callback to be called when rendering is finished.
  **/
-Kratu.prototype.renderPreviousPage = function(callback) {
+Kratu.prototype.renderPreviousPage = function(opt_callback) {
   var kratu = this;
   var pageNumber = kratu.getCurrentPage();
   if (pageNumber == 1) {
     throw 'Already on the first page';
   }
-  kratu.renderPage(pageNumber - 1);
+  kratu.renderPage(pageNumber - 1, opt_callback);
 };
+
 
 /**
  * Method for rendering the nextPage
  * @see #setPageSize
  * @see #setCurrentPage
- * @param {?Function} callback to be called when rendering is finished.
+ * @param {Function=} opt_callback to be opt_called when rendering is finished.
  **/
-Kratu.prototype.renderNextPage = function(callback) {
+Kratu.prototype.renderNextPage = function(opt_callback) {
   var kratu = this;
   var pageNumber = kratu.getCurrentPage();
   if (pageNumber == kratu.getNumPages()) {
     throw 'Already on the last page';
   }
-  kratu.renderPage(pageNumber + 1);
+  kratu.renderPage(pageNumber + 1, opt_callback);
 };
+
 
 /**
  * Method for rendering the entire report
- * @param {?Function} callback to be called when rendering is finished.
+ * @param {Function=} opt_callback to be called when rendering is finished.
  **/
-Kratu.prototype.renderReport = function(callback) {
+Kratu.prototype.renderReport = function(opt_callback) {
   var kratu = this;
   // In case we have already rendered a page, clear
   if (kratu.getHasRendered()) {
     kratu.clearReport();
   }
-  kratu.render_({callback: callback});
+  kratu.render_({callback: opt_callback});
 };
+
 
 /**
  * Method for updating a rendered report/page
  * Use this to recalculate and re-render the report
- * @param {?Function} callback to be called when rendering is finished.
+ * @param {Function=} opt_callback to be called when rendering is finished.
  **/
-Kratu.prototype.updateReport = function(callback) {
+Kratu.prototype.updateReport = function(opt_callback) {
   var kratu = this;
   kratu.clearReport(); // Clear everything
   if (kratu.getPageSize() > 0) { // We're paginating
-    kratu.renderPage(kratu.getCurrentPage(), callback);
+    kratu.renderPage(kratu.getCurrentPage(), opt_callback);
   }
   else {
-    kratu.render_({callback: callback, keepHeader: true});
+    kratu.render_({callback: opt_callback, keepHeader: true});
   }
 };
+
 
 /**
  * Method used to do the actual rendering
@@ -715,9 +752,9 @@ Kratu.prototype.render_ = function(options) {
     var entities = kratu.getEntities();
     var signalKeys = [];
     for (var key in entities[0]) {
-      signalKeys.push({key:key});
+      signalKeys.push({key: key});
     }
-    kratu.setReportDefinition({signals:signalKeys});
+    kratu.setReportDefinition({signals: signalKeys});
   }
 
   if (kratu.getHasRendered()) {
@@ -743,6 +780,7 @@ Kratu.prototype.render_ = function(options) {
   }
 };
 
+
 /**
  * Method used to render headings
  * @private
@@ -763,14 +801,15 @@ Kratu.prototype.renderReportHeadings_ = function() {
     }
     if (signal.headerEventHandlers) {
       kratu.addEventHandlers(signalHeader,
-        signal.headerEventHandlers,
-        {signal: signal}
+          signal.headerEventHandlers,
+          {signal: signal}
       );
     }
     headerRow.appendChild(signalHeader);
   }
   kratu.getRenderElement().appendChild(headerRow);
 };
+
 
 /**
  * Method used to render entities
@@ -817,7 +856,7 @@ Kratu.prototype.renderReportEntities_ = function(from, to) {
           value: entity[sN]
         });
       }
-        row.appendChild(cell);
+      row.appendChild(cell);
     }
     row.classList.add(className);
     if (location === 'top') {
@@ -836,6 +875,7 @@ Kratu.prototype.renderReportEntities_ = function(from, to) {
     renderRow(summaries[i].row, summaries[i].className, summaries[i].location);
   }
 };
+
 
 /**
  * Method used to calculate scores for all entities
@@ -900,7 +940,7 @@ Kratu.prototype.calculateEntities_ = function() {
       var callback = summaryCallbacks[scN];
       var callbackTypeName = callbackTypes[callback.type];
       calculatedEntity[callback.position][callbackTypeName] =
-        callback.callback({sumScore: sumScore, sumWeights: sumWeights});
+          callback.callback({sumScore: sumScore, sumWeights: sumWeights});
     }
     calculatedEntities.push({
       score: sumScore,
@@ -965,8 +1005,8 @@ Kratu.prototype.calculateSummaries_ = function() {
       var summaryRow = [];
 
       var className = 'kratu' +
-        rowDef.type.charAt(0).toUpperCase() +
-        rowDef.type.slice(1);
+          rowDef.type.charAt(0).toUpperCase() +
+          rowDef.type.slice(1);
 
       for (var sN = 0; sN < signals.length; sN++) {
         var signal = signals[sN];
@@ -984,7 +1024,7 @@ Kratu.prototype.calculateSummaries_ = function() {
             }
             else {
               throw replace.calculate +
-                ' is not a valid calculation type in column replacement';
+                  ' is not a valid calculation type in column replacement';
             }
           }
           if ('string' in replace) {
@@ -1013,6 +1053,7 @@ Kratu.prototype.calculateSummaries_ = function() {
   kratu.setSummaries_(summaryRows);
 };
 
+
 /**
  * Method for turning off/on a signal
  * Signal state is stored in persistent settings
@@ -1024,6 +1065,7 @@ Kratu.prototype.toggleSignal = function(key) {
   kratu.setPersistentSetting('disabledSignals', kratu.disabledSignals_);
   kratu.updateReport();
 };
+
 
 /**
  * Method for showing signal adjustments
@@ -1042,6 +1084,7 @@ Kratu.prototype.displaySignalAdjustment = function(signal) {
     });
   });
 };
+
 
 /**
  * Method for attaching event handlers to an element
@@ -1068,9 +1111,9 @@ Kratu.prototype.addEventHandlers = function(elm, handlers, args) {
   for (var eventType in handlers) {
     try {
       elm.addEventListener(
-        eventType,
-        createEventTypeHandler(eventType),
-        false
+          eventType,
+          createEventTypeHandler(eventType),
+          false
       );
     }
     catch (err) {
@@ -1078,6 +1121,7 @@ Kratu.prototype.addEventHandlers = function(elm, handlers, args) {
     }
   }
 };
+
 
 /**
  * Method for exporting the report in various formats
@@ -1099,7 +1143,7 @@ Kratu.prototype.getReportAs = function(type) {
       throw 'Data needs to be calculated first';
     }
 
-    var headerRow = [];  
+    var headerRow = [];
     var signals = kratu.getSignals();
 
     signals.forEach(function(signal) {
@@ -1162,6 +1206,7 @@ Kratu.prototype.getReportAs = function(type) {
   }
 };
 
+
 /**
  * Method for colorizing a html element based on a score
  * @param {Element} cell to be colorized.
@@ -1201,6 +1246,7 @@ Kratu.prototype.colorizeElement = function(cell, score) {
   cell.style.background = 'rgb(' + color.join(',') + ')';
 };
 
+
 /**
  * Method for clearing a report
  * @param {boolean} keepHeader flag to indicate wether to keep the header.
@@ -1216,6 +1262,7 @@ Kratu.prototype.clearReport = function(keepHeader) {
   kratu.setHasRendered_(false);
 };
 
+
 /**
  * Method for asserting that we actually have something to clear
  * Throws an exception if nothing to clear
@@ -1224,6 +1271,7 @@ Kratu.prototype.assertAbleToClear = function() {
   var kratu = this;
   if (!kratu.getHasRendered()) throw "Can't clear: Nothing rendered";
 };
+
 
 /**
  * Method for asserting that we have everything needed to render.
@@ -1235,12 +1283,13 @@ Kratu.prototype.assertAbleToRender = function() {
   if (!kratu.getEntities()) throw "Can't render: No entities set";
 };
 
+
 /**
  * Method for loading a script
  * @param {string} url of script to be loaded.
- * @param {?Function} callback to be called once loaded.
+ * @param {Function=} opt_callback to be called once loaded.
  **/
-Kratu.prototype.loadScript = function(url, callback) {
+Kratu.prototype.loadScript = function(url, opt_callback) {
   var kratu = this;
   var scriptElm;
   if (kratu.loadedScripts_[url]) {
@@ -1250,16 +1299,16 @@ Kratu.prototype.loadScript = function(url, callback) {
     scriptElm = document.createElement('script');
     scriptElm.type = 'text/javascript';
   }
-  if (callback instanceof Function) {
+  if (opt_callback instanceof Function) {
     scriptElm.onload = function() {
-      callback();
+      opt_callback();
     };
   }
 
   // Force reloading of resources by adding a timestamp to the URL
   url += (url.match(/\?/) ? '&' : '?') +
-    '__kratuTimeStamp=' +
-    new Date().getTime();
+      '__kratuTimeStamp=' +
+      new Date().getTime();
 
   scriptElm.src = url;
   if (!kratu.loadedScripts_[url]) {
@@ -1267,6 +1316,7 @@ Kratu.prototype.loadScript = function(url, callback) {
     document.getElementsByTagName('head')[0].appendChild(scriptElm);
   }
 };
+
 
 /**
  * Method for creating a 90 degree rotated SVG text element
@@ -1300,6 +1350,7 @@ Kratu.prototype.createRotatedElement = function(title) {
 
   return svg;
 };
+
 
 
 /**
@@ -1371,6 +1422,7 @@ function KratuSignal(signalDefinition) {
   }
 }
 
+
 /**
  * Method for kicking of the formatting a value and it's corresponding cell
  * If the signal defines a format function, this will be called.
@@ -1389,19 +1441,20 @@ KratuSignal.prototype.formatData = function(unformatedValue, cell) {
   }
 };
 
+
 /**
  * Method for calculating the score of a signal
  * @param {Object} entity to be calculated.
- * @param {?Object} simulation object that can override the calculation.
+ * @param {Object=} opt_simulation - object that can override the calculation.
  * @return {number} score.
  **/
-KratuSignal.prototype.calculateWeight = function(entity, simulation) {
+KratuSignal.prototype.calculateWeight = function(entity, opt_simulation) {
   var kratuSignal = this;
   var value = 0;
   if (!kratuSignal.hasCalculation(entity)) {
     return 0;
   }
-  if (simulation) {
+  if (opt_simulation) {
     value = simulation.value;
   }
   else {
@@ -1410,8 +1463,8 @@ KratuSignal.prototype.calculateWeight = function(entity, simulation) {
     }
     catch (err) {
       throw 'Warning! Could not call getData on signal ' +
-        kratuSignal.key +
-        ' ' + err;
+          kratuSignal.key +
+          ' ' + err;
     }
   }
 
@@ -1444,7 +1497,7 @@ KratuSignal.prototype.calculateWeight = function(entity, simulation) {
 
   // Find the actual weight and add inn the scaleExponent
   var calculatedWeight = (kratuSignal.weight / 100) *
-    Math.pow(delta, kratuSignal.scaleExponent) /
-    Math.pow(range, kratuSignal.scaleExponent);
+      Math.pow(delta, kratuSignal.scaleExponent) /
+      Math.pow(range, kratuSignal.scaleExponent);
   return calculatedWeight;
 };

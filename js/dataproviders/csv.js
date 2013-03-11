@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-'use strict';
+
 
 /**
- * A simple CSV loader/parser
+ * A simple CSV loader/parser provided with Kratu for convenience
  * @constructor
  * @param {Object=} opt_options object to controll parser behavior.
  **/
 function KratuCSVProvider(opt_options) {
+  'use strict';
   this.forceReload = opt_options && !!opt_options.forceReload ? true : false;
 }
+
 
 /**
  * Method to load and parse a CSV resource
  * @param {string} url for resource.
  * @param {Function} onSuccess called after successfully loaded a resource.
- **/
-KratuCSVProvider.prototype.load = function(url, onSuccess) {
+ * @param {Function=} opt_onError (optional) error handler.
+**/
+KratuCSVProvider.prototype.load = function(url, onSuccess, opt_onError) {
+  'use strict';
   var kratuCSVProvider = this;
   var xhr = new XMLHttpRequest();
 
   if (this.forceReload) {
     url += (url.match(/\?/) ? '&' : '?') +
-      '__kratuTimestamp=' + new Date().getTime();
+        '__kratuTimestamp=' + new Date().getTime();
   }
 
   xhr.onload = function(e) {
@@ -60,12 +64,13 @@ KratuCSVProvider.prototype.load = function(url, onSuccess) {
       throw 'Could not parse CSV from ' + url + ':\n' + err;
     }
   };
-  xhr.onerror = function(err) {
+  xhr.onerror = opt_onError || function(err) {
     throw 'Could not call ' + url + ':\n' + err;
   };
   xhr.open('GET', url);
   xhr.send();
 };
+
 
 /**
  * Method to parse a CSV string
@@ -75,6 +80,7 @@ KratuCSVProvider.prototype.load = function(url, onSuccess) {
  * @return {Array.<Object>} array of objects parsed from CSV.
  **/
 KratuCSVProvider.prototype.parse = function(csv, opt_callback) {
+  'use strict';
   var cLength = csv.length;
   var isInQuotes = false;
   var currentColumnIdx = 0;
@@ -90,7 +96,7 @@ KratuCSVProvider.prototype.parse = function(csv, opt_callback) {
 
   for (var i = 0; i < cLength; i++) {
     var character = csv.charAt(i);
-    if ((character === '\r' || character === '\n')   && !isInQuotes) {
+    if ((character === '\r' || character === '\n') && !isInQuotes) {
       columns.push(extractColumn(currentColumnIdx, i));
       if (columnNames.length) {
         var record = {};
@@ -112,12 +118,12 @@ KratuCSVProvider.prototype.parse = function(csv, opt_callback) {
         currentColumnIdx = i + 1;
       }
       // We have a \r\n line
-      if (character === '\r' && csv.charAt(i+1) ==='\n') {
+      if (character === '\r' && csv.charAt(i + 1) === '\n') {
         i++;
       }
     }
     else if (character == '"') {
-      if (isInQuotes && csv.charAt(i + 1) == '"') i++; // Found  escaped "
+      if (isInQuotes && csv.charAt(i + 1) == '"') i++; // Found escaped "
       else if (isInQuotes) isInQuotes = false;       // End of quote
       else {
         isInQuotes = true;

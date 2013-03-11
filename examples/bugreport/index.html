@@ -22,27 +22,28 @@ limitations under the License. -->
     <script src='../../js/dataproviders/json.js'></script>
     <script src='../../js/dataproviders/csv.js'></script>
     <script type="text/javascript" >
-      window.onload = function () {
+      /** Render a Kratu report showcasing the BugReport Example */
+      window.onload = function() {
         'use strict';
         var kratu = new Kratu();
-        var csvProvider  = new KratuCSVProvider({forceReload:true});
-        var jsonProvider = new KratuJsonProvider({forceReload:true});
-        jsonProvider.load('./bugs_reportdefinition.json', function (report){
-          kratu.setReportDefinition(report, function () {
-            csvProvider.load('./bugs_data.csv', function (bugs) {
+        var csvProvider = new KratuCSVProvider({forceReload: true});
+        var jsonProvider = new KratuJsonProvider({forceReload: true});
+        jsonProvider.load('./bugs_reportdefinition.json', function(report) {
+          kratu.setReportDefinition(report, function() {
+            csvProvider.load('./bugs_data.csv', function(bugs) {
               kratu.setEntities(bugs);
               kratu.setPageSize(21);
-              kratu.setRenderElement( document.getElementById('bugReport') );
+              kratu.setRenderElement(document.getElementById('bugReport'));
               kratu.renderCurrentPage();
-            })
+            });
           });
         });
-        document.getElementById('previous').addEventListener('click', function() {
-          kratu.renderPreviousPage();
-        });
-        document.getElementById('next').addEventListener('click', function () {
-          kratu.renderNextPage();
-        });
+        document.getElementById('previous').addEventListener('click',
+          function() {kratu.renderPreviousPage();}
+        );
+        document.getElementById('next').addEventListener('click',
+          function() {kratu.renderNextPage();}
+        );
       };
       </script>
   </head>

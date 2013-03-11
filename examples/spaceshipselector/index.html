@@ -24,9 +24,11 @@ limitations under the License.
     <script src='../../js/dataproviders/csv.js'></script>
     <script src='../../js/dataproviders/json.js'></script>
     <script type="text/javascript">
-      window.onload = function () {
+      /** Render a Kratu report showcasing the AdWords HealtCheck Example */
+      window.onload = function() {
+        'use strict';
         var csvProvider = new KratuCSVProvider();
-        csvProvider.load('./spaceships_data.csv', function (spaceships) {
+        csvProvider.load('./spaceships_data.csv', function(spaceships) {
           // Instantiate a new Kratu object
           var kratu = new Kratu();
 
@@ -36,14 +38,14 @@ limitations under the License.
           // Tell Kratu where to render our report
           kratu.setRenderElement(document.getElementById('kratuReport'));
 
-          var jsonProvider = new KratuJsonProvider({forceReload:true});
-          jsonProvider.load('./spaceships_reportdefinition.json', function (reportDefinition) {
-            kratu.setReportDefinition(reportDefinition, function () {
-              // And render it!
-              kratu.renderReport();
+          var jsonProvider = new KratuJsonProvider({forceReload: true});
+          jsonProvider.load('./spaceships_reportdefinition.json',
+            function(reportDefinition) {
+              kratu.setReportDefinition(reportDefinition, function() {
+                // And render it!
+                kratu.renderReport();
             });
-          })
-
+          });
         });
       };
     </script>

@@ -16,33 +16,43 @@ limitations under the License. -->
   <head>
     <meta charset="utf-8"/>
     <title>Kratu Example Applications</title>
-    <link rel="stylesheet" href="../../css/kratu.css">
+    <link rel="stylesheet" href="../css/kratu.css">
+    <link rel="stylesheet" href="../css/examples.css">
     <script src='../js/dataproviders/json.js'></script>
     <script type="text/javascript">
-      window.onload = function () {
+      /** Overview of all Kratu examples + check for local fileaccess */
+      window.onload = function() {
         'use strict';
-
+        var fileAccessElm = document.getElementById('fileAccessStatus');
+        var success = function() {
+          fileAccessElm.textContent = 'Example files can be loaded';
+          fileAccessElm.classList.add('loadedFilesSuccessfully');
+        };
+        var error = function(err) {
+          fileAccessElm.textContent = 'Example files could not be loaded. ' +
+              'If you\'re running the examples locally, make sure your ' +
+              'browser is configured to be able to access local files. For ' +
+              ' Chrome, this can be done by starting Chrome with the ' +
+              '--allow-file-access-from-files flag.';
+          fileAccessElm.classList.add('loadedFilesFailed');
+        };
         // Assert that we can load the examples
-        try {
-          var jsonProvider = new KratuJsonProvider();
-          jsonProvider.load('./salesforceanalysis/data.json', function () {});
-        }
-        catch (err) {
-          console.log(document.location.href);
-          console.log(err.toString());
-          document.getElementById('loadExampleError').textContent = err;
-        }
-      }
+        var jsonProvider = new KratuJsonProvider();
+        jsonProvider.load('./adwordshealthcheck/aw_data.json', success, error);
+      };
     </script>
   </head>
   <body>
-    <h1>Kratu Tutorial and Examples</h1>
-    <h2 id="loadExampleError"></h2>
+    <div class="kratuLogo small"><a href="">k</a><span>powered by</span></div>
+    <h1>Kratu Examples</h1>
+    <h4 id="fileAccessStatus"></h4>
+    <h3>These are the example applications included in the Kratu package:</h3>
     <ul>
-      <li>A simple <a href="./productcomparison/index.html">Product Comparison</a> using plain Javascript</li>
-      <li><a href="./bugreport/index.html">Bug prioritization report</a> using jQuery</li>
+      <li>A simple <a href="./spaceshipselector/index.html">Product Comparison</a></li>
+      <li><a href="./bugreport/index.html">Bug prioritization report</a> with paginations</li>
       <li>A more complex <a href="./adwordshealthcheck/index.html">AdWords Healtcheck</a></li>
     </ul>
-    <div class="kratuLogo small"><a href="">k</a><span>powered by</span></div>
+    <p>For an introduction and installation notes, please refer to <a href='http://google.github.com/kratu/'>the Kratu introduction page</a>.<br>
+    For further documentation, please refer to <a href='http://google.github.com/kratu/tutorial/'>our tutorial page</a>.</p>
   </body>
 </html>

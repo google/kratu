@@ -23,14 +23,15 @@ limitations under the License.
     <script src='../../js/kratu.js'></script>
     <script src='../../js/dataproviders/json.js'></script>
     <script type="text/javascript">
-     window.onload = function () {
+      /** Render a Kratu report showcasing the AdWords HealtCheck Example */
+      window.onload = function() {
         'use strict';
-        var kratu     = new Kratu();
+        var kratu = new Kratu();
         var reportElm = document.getElementById('kratuReport');
-        
-        kratu.setRenderElement( reportElm );
 
-        var jsonProvider = new KratuJsonProvider({forceReload:true});
+        kratu.setRenderElement(reportElm);
+
+        var jsonProvider = new KratuJsonProvider({forceReload: true});
         jsonProvider.load('./aw_reportdefinition.json', setReport);
 
         function setReport(report) {
@@ -41,22 +42,26 @@ limitations under the License.
         }
         function renderData(data) {
           kratu.setEntities(data);
-          kratu.renderReport( addExportLinks );
+          kratu.renderReport(addExportLinks);
         }
-        function addExportLinks(){
+        function addExportLinks() {
           window.URL = window.webkitURL || window.URL;
           var blob = new Blob([kratu.getReportAs('csv')], {type: 'text/csv'});
 
           var downloadLink = document.createElement('a');
-          downloadLink.innerText='Download CSV';
+          downloadLink.innerText = 'Download CSV';
           downloadLink.download = 'Report.csv';
           downloadLink.classList.add('downloadLink');
           downloadLink.href = window.URL.createObjectURL(blob);
-          downloadLink.dataset.downloadurl = ['text/csv', downloadLink.download, downloadLink.href].join(':');
+          downloadLink.dataset.downloadurl = [
+            'text/csv',
+            downloadLink.download,
+            downloadLink.href
+          ].join(':');
 
           reportElm.appendChild(downloadLink);
         }
-      }
+      };
   </script>
   <style type="text/css">
   </style>
