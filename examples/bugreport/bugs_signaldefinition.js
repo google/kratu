@@ -25,7 +25,7 @@
  * TODO: Add more docs
  * @constructor
  * @param {Kratu} kratu class instance.
- **/
+ */
 function KratuSignalDefinitions(kratu) {
   'use strict';
   var headerEventHandlers = {click: kratu.eventHandlers.toggleSignal};

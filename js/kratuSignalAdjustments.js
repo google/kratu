@@ -20,7 +20,7 @@
  * UI Adjustments for Kratu Signals
  * @constructor
  * @param {Kratu} kratu class instance.
- **/
+ */
 function KratuSignalAdjustments(kratu) {
   'use strict';
   this.kratu = kratu;
@@ -38,8 +38,8 @@ function KratuSignalAdjustments(kratu) {
 /**
  * Method for displaying the adjustments for this signal
  * @param {KratuSignal} signal to be adjusted.
- * @param {Function} onChangeCallback to be called when adjustments is made.
- **/
+ * @param {!Function} onChangeCallback to be called when adjustments is made.
+ */
 KratuSignalAdjustments.prototype.displayAdjustments = function(
     signal, onChangeCallback) {
   'use strict';
@@ -135,7 +135,7 @@ KratuSignalAdjustments.prototype.displayAdjustments = function(
  * Method for updating the graph and sliders when a signal is adjusted
  * @param {KratuSignal} signal triggering the adjustment.
  * @private
- **/
+ */
 KratuSignalAdjustments.prototype.updateMeasures_ = function(signal) {
   'use strict';
   if (signal.lMin !== null) {
@@ -205,7 +205,7 @@ KratuSignalAdjustments.prototype.updateMeasures_ = function(signal) {
  * @param {Object} args for this slider.
  * @return {Object<string, Element>} slider element and container element.
  * @private
- **/
+ */
 KratuSignalAdjustments.prototype.createSliderObject_ = function(args) {
   'use strict';
   var min = args.signal.range.min;

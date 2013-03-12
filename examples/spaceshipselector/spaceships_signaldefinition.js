@@ -24,7 +24,7 @@
  *
  * @constructor
  * @param {Kratu} kratu class instance.
- **/
+ */
 function KratuSignalDefinitions(kratu) {
   'use strict';
   // For name and model, we want to use the overall score.

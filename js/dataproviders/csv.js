@@ -20,7 +20,7 @@
  * A simple CSV loader/parser provided with Kratu for convenience
  * @constructor
  * @param {Object=} opt_options object to controll parser behavior.
- **/
+ */
 function KratuCSVProvider(opt_options) {
   'use strict';
   this.forceReload = opt_options && !!opt_options.forceReload ? true : false;
@@ -32,7 +32,7 @@ function KratuCSVProvider(opt_options) {
  * @param {string} url for resource.
  * @param {Function} onSuccess called after successfully loaded a resource.
  * @param {Function=} opt_onError (optional) error handler.
-**/
+*/
 KratuCSVProvider.prototype.load = function(url, onSuccess, opt_onError) {
   'use strict';
   var kratuCSVProvider = this;
@@ -78,7 +78,7 @@ KratuCSVProvider.prototype.load = function(url, onSuccess, opt_onError) {
  * @param {Function=} opt_callback (optional) called for each row of CSV data
  *   when EOF is reached, opt_callback is called with null.
  * @return {Array.<Object>} array of objects parsed from CSV.
- **/
+ */
 KratuCSVProvider.prototype.parse = function(csv, opt_callback) {
   'use strict';
   var cLength = csv.length;
