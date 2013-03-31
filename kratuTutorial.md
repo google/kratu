@@ -362,7 +362,7 @@ Similarly to toggling, you can add UI for adjustments of signals (see the [AdWor
 ```javascript
 this.signalToBeTogglable = {
   headerEventHandlers: {
-    click: kratu.eventHandlers.displaySignalAdjustment
+    click: kratu.eventHandlers.adjustSignal
   }
 };
 ```
