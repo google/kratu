@@ -1450,7 +1450,7 @@ KratuSignal.prototype.calculateWeight = function(entity, opt_simulation) {
     return 0;
   }
   if (opt_simulation) {
-    value = simulation.value;
+    value = opt_simulation.value;
   }
   else {
     try {
