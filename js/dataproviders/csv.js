@@ -94,8 +94,11 @@ KratuCSVProvider.prototype.parse = function(csv, opt_callback) {
     return column.replace(/\"\"/g, '"');
   };
 
+  var n = 0;
+
   for (var i = 0; i < cLength; i++) {
     var character = csv.charAt(i);
+    // We have a new record!
     if ((character === '\r' || character === '\n') && !isInQuotes) {
       columns.push(extractColumn(currentColumnIdx, i));
       if (columnNames.length) {
@@ -117,8 +120,9 @@ KratuCSVProvider.prototype.parse = function(csv, opt_callback) {
       if (i < cLength) {
         currentColumnIdx = i + 1;
       }
-      // We have a \r\n line
-      if (character === '\r' && csv.charAt(i + 1) === '\n') {
+      // We have a \r\n line, so we want to skip ahead an additional character
+      if ((character === '\r' && csv.charAt(i + 1) === '\n')) {
+        currentColumnIdx++;
         i++;
       }
     }
