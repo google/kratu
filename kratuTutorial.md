@@ -77,7 +77,7 @@ window.onload = function () {
     var kratu = new Kratu();
 
     // Give Kratu our spaceships
-    kratu.setEntities(spaceships);
+    kratu.setEntities(ships);
 
     // Tell Kratu where to render our report
     kratu.setRenderElement(document.getElementById('kratuReport'));
@@ -154,8 +154,9 @@ window.onload = function () {
     var jsonProvider = new KratuJsonProvider();
     jsonProvider.load('./spaceships_reportdefinition.json', 
       function (reportDefinition) {
-        kratu.setReportDefinition(reportDefinition);
-        kratu.renderReport();
+        kratu.setReportDefinition(reportDefinition, function() {
+          kratu.renderReport();
+       });
       })
   });
 };
@@ -273,12 +274,13 @@ The row objects must have keys for _type_ (_average_ or _sum_) and _location_ (_
   "summaryRows":[
     {
       "location":"top",
-      "type"    :"average",
+      "type"    :"average"
     },
     {
       "location":"bottom",
-      "type"    :"sum",
+      "type"    :"sum"
     }
+  ]
 ```
 
 For an advanced usage, check out the [AdWords Healtcheck example](https://github.com/google/kratu/tree/master/examples/adwordshealtcheck).
