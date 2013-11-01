@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Kratu by google</title>
 
-    <link rel="stylesheet" href="../stylesheets/styles.css">
-    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
-    <script src="../javascripts/scale.fix.js"></script>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -91,8 +91,8 @@ Include the following lines as the last line in the &lt;head&gt; section:</p>
 
 <div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">csvProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuCSVProvider</span><span class="p">();</span>
-  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ships</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">ships</span><span class="p">);</span>
+  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">spaceships</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">spaceships</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">};</span>
 </pre></div>
@@ -106,7 +106,7 @@ Include the following lines as the last line in the &lt;head&gt; section:</p>
 
 <div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">csvProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuCSVProvider</span><span class="p">();</span>
-  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ships</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">spaceships</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="c1">// Instantiate a new Kratu object</span>
     <span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Kratu</span><span class="p">();</span>
@@ -178,7 +178,7 @@ Include the KratuJsonProvider...</p>
 
 <div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">csvProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">KratuCSVProvider</span><span class="p">();</span>
-  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ships</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">csvProvider</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./spaceships_data.csv'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">spaceships</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Instantiate a new Kratu object</span>
     <span class="kd">var</span> <span class="nx">kratu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Kratu</span><span class="p">();</span>
 
