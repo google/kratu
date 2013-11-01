@@ -56,8 +56,8 @@ The following snippet will use our CSV-loader to load our spaceships and log the
 ```javascript
 window.onload = function () {
   var csvProvider = new KratuCSVProvider();
-  csvProvider.load('./spaceships_data.csv', function (ships) {
-    console.log(ships);
+  csvProvider.load('./spaceships_data.csv', function (spaceships) {
+    console.log(spaceships);
   });
 };
 ```
@@ -71,13 +71,13 @@ Now that we've loaded our spaceships, let's see if we can get Kratu to list our 
 ```javascript
 window.onload = function () {
   var csvProvider = new KratuCSVProvider();
-  csvProvider.load('./spaceships_data.csv', function (ships) {
+  csvProvider.load('./spaceships_data.csv', function (spaceships) {
 
     // Instantiate a new Kratu object
     var kratu = new Kratu();
 
     // Give Kratu our spaceships
-    kratu.setEntities(ships);
+    kratu.setEntities(spaceships);
 
     // Tell Kratu where to render our report
     kratu.setRenderElement(document.getElementById('kratuReport'));
@@ -141,7 +141,7 @@ Include the KratuJsonProvider...
 ```javascript
 window.onload = function () {
   var csvProvider = new KratuCSVProvider();
-  csvProvider.load('./spaceships_data.csv', function (ships) {
+  csvProvider.load('./spaceships_data.csv', function (spaceships) {
     // Instantiate a new Kratu object
     var kratu = new Kratu();
 
