@@ -45,7 +45,7 @@ To get a better understanding of what Kratu has to offer, go through [this in-de
 Pull requests are very much appreciated. Please sign the [Google Code contributor license agreement](http://code.google.com/legal/individual-cla-v1.0.html) (There is a convenient online form) before submitting.
 
 <dl>
-  <dt>Author</dt><dd><a href="https://plus.google.com/115142215538295075810">Tarjei Vassbotn (Google Inc.)</a></dd>
+  <dt>Author</dt><dd><a href="https://plus.google.com/+TarjeiVassbotn">Tarjei Vassbotn (Google Inc.)</a></dd>
   <dt>Copyright</dt><dd>Copyright © 2013 Google, Inc.</dd>
   <dt>License</dt><dd>Apache 2.0</dd>
   <dt>Limitations</dt><dd>Only tested on the latest versions of browsers. Expect it to fail on older versions.</dd>
