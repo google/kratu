@@ -283,7 +283,7 @@ The row objects must have keys for _type_ (_average_ or _sum_) and _location_ (_
   ]
 ```
 
-For an advanced usage, check out the [AdWords Healtcheck example](https://github.com/google/kratu/tree/master/examples/adwordshealtcheck).
+For an advanced usage, check out the [AdWords Healtcheck example](https://github.com/google/kratu/tree/master/examples/adwordshealthcheck).
 
 
 ### Data composition
