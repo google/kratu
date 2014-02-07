@@ -54,6 +54,13 @@ function Kratu() {
   kratu.hasRendered_ = false;
 
   /**
+   * State flag to tell wether we've have calculated these entities before
+   * @private
+   * @type {boolean}
+   */
+  kratu.newEntities_ = true;
+
+  /**
    * Cache for already loaded scripts
    * @private
    * @type {Object<string,Element>}
@@ -498,6 +505,9 @@ Kratu.prototype.getCurrentPage = function() {
  */
 Kratu.prototype.setHasRendered_ = function(value) {
   var kratu = this;
+  if (value === false) {
+    kratu.newEntities_ = true; // Force recalculation
+  }
   kratu.hasRendered_ = value;
 };
 
@@ -552,6 +562,7 @@ Kratu.prototype.getRenderElement = function() {
 Kratu.prototype.setEntities = function(entities) {
   var kratu = this;
   kratu.entities_ = entities;
+  kratu.newEntities_ = true;
 };
 
 
@@ -641,10 +652,10 @@ Kratu.prototype.renderPage = function(opt_pageNumber, opt_callback) {
     }
   }
   kratu.setCurrentPage(opt_pageNumber);
-  var to = (kratu.getPageSize() * kratu.getCurrentPage() - 1);
-  if (opt_pageNumber == kratu.getNumPages()) {
-    to = kratu.getNumEntities();
-  }
+  var to = Math.min(
+    (kratu.getPageSize() * kratu.getCurrentPage() - 1),
+    kratu.getNumEntities()
+  );
   kratu.render_({
     from: kratu.getPageSize() * (kratu.getCurrentPage() - 1),
     to: to,
@@ -662,7 +673,7 @@ Kratu.prototype.renderPage = function(opt_pageNumber, opt_callback) {
  */
 Kratu.prototype.renderCurrentPage = function(opt_callback) {
   var kratu = this;
-  if (!kratu.getCurrentPage()) {
+  if (!kratu.getCurrentPage() || kratu.getCurrentPage() > kratu.getNumPages()) {
     kratu.setCurrentPage(1);
   }
   kratu.renderPage(kratu.getCurrentPage(), opt_callback);
@@ -757,8 +768,11 @@ Kratu.prototype.render_ = function(options) {
   }
   else {
     kratu.renderReportHeadings_();
+  }
+  if (kratu.newEntities_) { // If we haven't seen this data before; Calculate
     kratu.calculateEntities_();
     kratu.calculateSummaries_();
+    kratu.newEntities_ = false;
   }
 
   var from = 0;
