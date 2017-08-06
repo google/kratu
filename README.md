@@ -14,7 +14,7 @@ You can use Kratu to analyze data for support queue prioritization, account qual
 
 ## Installation
 Simply [download Kratu](https://github.com/google/kratu/archive/master.zip) and extract, or check out the repository:
-```
+```bash
 $ git clone https://github.com/google/kratu.git
 ```
 *Note: If you're running Kratu locally, you might have to start your browser with a flag to allow local file loading.*
